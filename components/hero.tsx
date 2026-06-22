@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -7,55 +7,58 @@ export default function Hero() {
   return (
     <section className="relative h-[85vh] overflow-hidden font-[Vazirmatn]">
 
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        className="absolute inset-0 h-full w-full object-cover"
-      >
-        <source src="/videos/hero.mp4" type="video/mp4" />
-      </video>
+      {/* Background Images */}
+      <div className="absolute inset-0">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: "url('/flowers/rose-1.jpg')" }}
+        />
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-40 mix-blend-overlay"
+          style={{ backgroundImage: "url('/flowers/rose-2.jpg')" }}
+        />
+      </div>
 
-      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-rose-950/40" />
+      {/* Soft Relax Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-emerald-950/60 via-stone-900/40 to-rose-950/40" />
 
+      {/* Content */}
       <div className="relative z-10 h-full flex items-center justify-center">
 
         <div className="text-center text-white px-6 max-w-3xl">
 
           <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-7xl font-bold tracking-wide"
+            initial={{ opacity: 0, y: 25, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="text-4xl md:text-6xl font-bold tracking-wide"
           >
-            گل محمدی
+           گل محمدی
           </motion.h1>
 
-          <p className="mt-5 text-lg md:text-2xl text-rose-100 leading-relaxed">
-            زیبایی گل‌ها برای لحظه‌هایی که فراموش نمی‌شوند
-          </p>
 
-          <p className="mt-3 text-sm md:text-base text-rose-200">
-            Flowers that carry emotion, elegance, and Persian warmth
-          </p>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.35, duration: 0.8 }}
+            className="mt-3 text-sm md:text-base text-rose-100/80"
+          >
+            عطر گل‌ها، طعم چای و لحظه‌هایی که آرامش را دوباره تعریف می‌کنند
+          </motion.p>
 
-          <div className="mt-10 flex justify-center gap-4 flex-wrap">
-
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.8 }}
+            className="mt-10 flex justify-center gap-4 flex-wrap"
+          >
             <Link
               href="/shop"
-              className="bg-rose-600 hover:bg-rose-700 transition px-7 py-3 rounded-full text-white shadow-lg"
+              className="bg-emerald-700 hover:bg-emerald-800 transition px-7 py-3 rounded-full text-white shadow-lg"
             >
-              خرید گل‌ها
+             خرید برای نوشیدن چایی ...
             </Link>
-
-            <Link
-              href="/contact"
-              className="px-7 py-3 rounded-full border border-white/70 text-white hover:bg-white/10 transition"
-            >
-              تماس با ما
-            </Link>
-
-          </div>
+          </motion.div>
 
         </div>
       </div>

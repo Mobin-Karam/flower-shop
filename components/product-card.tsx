@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCartStore } from "@/store/cart-store";
 import { toast } from "sonner";
+import { formatPrice } from "@/lib/format";
 
 export default function ProductCard({ product }: any) {
   const addItem = useCartStore((s) => s.addItem);
@@ -48,7 +49,7 @@ export default function ProductCard({ product }: any) {
         </p>
 
         <div className="mt-3 font-bold text-pink-600">
-          ${product.price}
+        تومان {formatPrice(product.price)}
         </div>
 
         <div className="mt-auto pt-4">

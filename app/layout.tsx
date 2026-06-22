@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://flower-shop-ochre-psi.vercel.app/"),
 
   title: {
-    default: "Gulify | خرید گل خشک دمنوشی و گل رز صورتی",
+    default: "Gulify | خرید گل خشک دمنوشی و گل محمدی",
     template: "%s | Gulify",
   },
   icons: {
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   authors: [{ name: "Gulify" }],
 
   openGraph: {
-    title: "Gulify | گل رز صورتی و گل محمدی دمنوشی",
+    title: "Gulify |  و گل محمدی دمنوشی",
     description:
       "خرید گل خشک طبیعی برای دمنوش آرامش‌بخش. کیفیت بالا و ارسال سریع.",
     url: "https://flower-shop-ochre-psi.vercel.app/",
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Gulify | دمنوش گل طبیعی",
-    description: "خرید گل رز صورتی و گل محمدی خشک برای دمنوش",
+    description: "خرید گل  محمدی خشک برای دمنوش",
   },
 
   robots: {

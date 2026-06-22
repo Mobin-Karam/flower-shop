@@ -8,27 +8,33 @@ import { toast } from "sonner";
 export default function CheckoutForm() {
   const items = useCartStore((s) => s.items);
   const clearCart = useCartStore((s) => s.clearCart);
+  const total = useCartStore((s) => s.getTotalPrice());
 
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  const total = useCartStore((s) => s.getTotalPrice());
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!items.length) {
+      toast.error("Cart is empty");
+      return;
+    }
+
     setLoading(true);
 
-    const form = new FormData(e.target as HTMLFormElement);
+    const form = new FormData(e.currentTarget);
 
-    const data = {
-      fullName: form.get("name"),
-      phone: form.get("phone"),
-      city: form.get("city"),
-      address: form.get("address"),
-      note: form.get("message"),
+    const payload = {
+      fullName: String(form.get("name") ?? ""),
+      phone: String(form.get("phone") ?? ""),
+      city: String(form.get("city") ?? ""),
+      address: String(form.get("address") ?? ""),
+      note: String(form.get("message") ?? ""),
+      email: String(form.get("email") ?? ""),
     };
 
-    const parsed = checkoutSchema.safeParse(data);
+    const parsed = checkoutSchema.safeParse(payload);
 
     if (!parsed.success) {
       toast.error("Please fill all required fields");
@@ -36,33 +42,15 @@ export default function CheckoutForm() {
       return;
     }
 
-    const payload = {
-      ...parsed.data,
-      items,
-      total,
-    };
-
     const res = await fetch("/api/lead", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        name: payload.fullName,
-        phone: payload.phone,
-        email: "", // optional if you still need it
-        message: `
-Order:
-${payload.items
-  .map((i: any) => `${i.name} x${i.quantity} = $${i.price * i.quantity}`)
-  .join("\n")}
-
-TOTAL: $${payload.total}
-
-Address: ${payload.address}
-City: ${payload.city}
-Note: ${payload.note ?? ""}
-        `,
+        ...parsed.data,
+        items,
+        total,
         productTitle: "Flower Order",
         brand: "Gol Mohammadi Shop",
       }),
@@ -75,7 +63,7 @@ Note: ${payload.note ?? ""}
       clearCart();
       toast.success("Order placed successfully 🌸");
     } else {
-      toast.error("Failed to send order");
+      toast.error(result.error || "Failed to send order");
     }
 
     setLoading(false);
@@ -88,7 +76,7 @@ Note: ${payload.note ?? ""}
           Order Sent Successfully 🌸
         </h2>
         <p className="mt-4 text-gray-600">
-          We will contact you soon on WhatsApp.
+          We will contact you soon.
         </p>
       </div>
     );
@@ -98,9 +86,8 @@ Note: ${payload.note ?? ""}
     <form onSubmit={handleSubmit} className="grid gap-4">
       <input name="name" placeholder="نام و نام خانوادگی" className="input" />
       <input name="phone" placeholder="شماره موبایل" className="input" />
-      <input name="email" placeholder="ایمیل(اختیاری)" className="input" />
+      <input name="email" placeholder="ایمیل (اختیاری)" className="input" />
       <input name="address" placeholder="آدرس" className="input" />
-
       <textarea name="message" placeholder="توضیحات" className="input" />
 
       <button disabled={loading} className="btn-primary">

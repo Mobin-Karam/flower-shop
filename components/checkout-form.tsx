@@ -19,65 +19,65 @@ export default function CheckoutForm() {
     return typeof value === "string" ? value.trim() : "";
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
 
-    if (!items.length) {
-      toast.error("Cart is empty");
-      return;
-    }
+  if (!items.length) {
+    toast.error("سبد خرید خالی است");
+    return;
+  }
 
-    setLoading(true);
+  setLoading(true);
 
-    const form = new FormData(e.currentTarget);
+  const form = new FormData(e.currentTarget);
 
-    const payload = {
-      fullName: getValue(form, "name"),
-      phone: getValue(form, "phone"),
-      city: getValue(form, "city"),
-      address: getValue(form, "address"),
-      note: getValue(form, "message"),
-      email: getValue(form, "email") || undefined,
-      items,
-      total: typeof total === "number" ? total : 0,
-      productTitle: "Flower Order",
-      brand: "Gol Mohammadi Shop",
-    };
-
-    const parsed = checkoutSchema.safeParse(payload);
-
-    if (!parsed.success) {
-      console.log(parsed.error.format());
-      toast.error("Please fill all required fields correctly");
-      setLoading(false);
-      return;
-    }
-
-    try {
-      const res = await fetch("/api/lead", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(parsed.data),
-      });
-
-      const result = await res.json();
-
-      if (result.success) {
-        setSuccess(true);
-        clearCart();
-        toast.success("Order placed successfully 🌸");
-      } else {
-        toast.error(result.error || "Failed to send order");
-      }
-    } catch (err) {
-      console.error(err);
-      toast.error("Network error. Please try again.");
-    } finally {
-      setLoading(false);
-    }
+  const payload = {
+    fullName: getValue(form, "name"),
+    phone: getValue(form, "phone"),
+    city: getValue(form, "city"),
+    address: getValue(form, "address"),
+    note: getValue(form, "message"),
+    email: getValue(form, "email") || undefined,
+    items,
+    total: typeof total === "number" ? total : 0,
+    productTitle: "سفارش گل",
+    brand: "فروشگاه گل محمدی",
   };
+
+  const parsed = checkoutSchema.safeParse(payload);
+
+  if (!parsed.success) {
+    console.log(parsed.error.format());
+    toast.error("لطفاً تمام فیلدهای الزامی را به‌درستی تکمیل کنید");
+    setLoading(false);
+    return;
+  }
+
+  try {
+    const res = await fetch("/api/lead", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(parsed.data),
+    });
+
+    const result = await res.json();
+
+    if (result.success) {
+      setSuccess(true);
+      clearCart();
+      toast.success("سفارش با موفقیت ثبت شد 🌸");
+    } else {
+      toast.error(result.error || "ارسال سفارش ناموفق بود");
+    }
+  } catch (err) {
+    console.error(err);
+    toast.error("خطای شبکه. لطفاً دوباره تلاش کنید");
+  } finally {
+    setLoading(false);
+  }
+};
 
   if (success) {
     return (

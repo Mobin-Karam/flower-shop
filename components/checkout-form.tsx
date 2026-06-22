@@ -21,11 +21,11 @@ export default function CheckoutForm() {
     const form = new FormData(e.target as HTMLFormElement);
 
     const data = {
-      name: form.get("name"),
+      fullName: form.get("name"),
       phone: form.get("phone"),
-      email: form.get("email"),
-      message: form.get("message"),
+      city: form.get("city"),
       address: form.get("address"),
+      note: form.get("message"),
     };
 
     const parsed = checkoutSchema.safeParse(data);
@@ -48,9 +48,9 @@ export default function CheckoutForm() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        name: payload.name,
+        name: payload.fullName,
         phone: payload.phone,
-        email: payload.email,
+        email: "", // optional if you still need it
         message: `
 Order:
 ${payload.items
@@ -60,6 +60,8 @@ ${payload.items
 TOTAL: $${payload.total}
 
 Address: ${payload.address}
+City: ${payload.city}
+Note: ${payload.note ?? ""}
         `,
         productTitle: "Flower Order",
         brand: "Gol Mohammadi Shop",

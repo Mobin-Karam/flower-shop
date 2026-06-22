@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Flower2, ShoppingCart } from "lucide-react";
-import MobileMenu from "./mobile-menu";
 import { useCartStore } from "@/store/cart-store";
 
 export default function Navbar() {

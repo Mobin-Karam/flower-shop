@@ -12,7 +12,7 @@ export default function ShopPage() {
   );
 
   return (
-    <div className="section font-[Vazirmatn] bg-gradient-to-b from-[#f7f5f0] to-[#efe7dd]">
+    <div className="section font-[Vazirmatn] bg-linear-to-b from-[#f7f5f0] to-[#efe7dd]">
 
       <div className="container-custom">
 

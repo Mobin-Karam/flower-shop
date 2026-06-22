@@ -6,6 +6,7 @@ import Footer from "@/components/footer";
 import WhatsappButton from "@/components/whatsapp-button";
 import MobileBottomNav from "@/components/mobile-bottom-nav";
 import { Toaster } from "sonner";
+import CartCTA from "@/components/cart-cta";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://flower-shop-ochre-psi.vercel.app/"),
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
     default: "Gulify | خرید گل خشک دمنوشی و گل رز صورتی",
     template: "%s | Gulify",
   },
-    icons: {
+  icons: {
     icon: "/logo/logo.png",
     shortcut: "/logo/logo.png",
     apple: "/logo/logo.png",
@@ -57,7 +58,6 @@ export const metadata: Metadata = {
   },
 };
 
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -67,6 +67,8 @@ export default function RootLayout({
     <html lang="fa" dir="rtl">
       <body>
         <Navbar />
+
+        <CartCTA />
         <MobileBottomNav />
 
         <main>{children}</main>

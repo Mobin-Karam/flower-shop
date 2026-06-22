@@ -1,26 +1,29 @@
-import { z } from "zod"
+import { z } from "zod";
 
 export const checkoutSchema = z.object({
-  fullName: z
-    .string()
-    .min(3),
+  fullName: z.string().min(3),
+  phone: z.string().min(8),
+  city: z.string().min(2),
+  address: z.string().min(10),
 
-  phone: z
-    .string()
-    .min(8),
+  email: z.string().email().optional(), // ✅ add this
 
-  city: z
-    .string()
-    .min(2),
+  note: z.string().optional(),
 
-  address: z
-    .string()
-    .min(10),
-
-  note: z
-    .string()
+  items: z
+    .array(
+      z.object({
+        name: z.string(),
+        quantity: z.number(),
+        price: z.number(),
+      })
+    )
     .optional(),
-})
 
-export type CheckoutFormData =
-  z.infer<typeof checkoutSchema>
+  total: z.number(),
+
+  productTitle: z.string().optional(),
+  brand: z.string().optional(),
+});
+
+export type CheckoutFormData = z.infer<typeof checkoutSchema>;

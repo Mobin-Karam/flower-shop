@@ -12,49 +12,50 @@ export default function ContactPage() {
 
     const form = new FormData(e.target as HTMLFormElement);
 
-    const payload = {
-      name: form.get("name"),
-      phone: form.get("phone"),
-      email: form.get("email"),
-      message: form.get("message"),
-      productTitle: "Contact Form",
-      brand: "Gol Mohammadi Shop",
-    };
-
-    const res = await fetch("/api/lead", {
+    await fetch("/api/lead", {
       method: "POST",
-      body: JSON.stringify(payload),
+      body: JSON.stringify({
+        name: form.get("name"),
+        phone: form.get("phone"),
+        email: form.get("email"),
+        message: form.get("message"),
+      }),
     });
 
-    if (res.ok) setSent(true);
-
+    setSent(true);
     setLoading(false);
   }
 
   if (sent) {
     return (
-      <div className="section text-center">
-        <h1 className="text-3xl font-bold text-green-600">Message Sent 🌸</h1>
+      <div className="section text-center" dir="rtl">
+        <div className="card p-10">
+          <h1 className="text-2xl font-bold text-green-600">
+            پیام شما ارسال شد 🌿
+          </h1>
+          <p className="text-gray-500 mt-2">به زودی با شما تماس می‌گیریم</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="section">
+    <div className="section" dir="rtl">
       <div className="container-custom max-w-xl">
-        <h1 className="text-4xl font-bold mb-6">Contact Us</h1>
+        <div className="card p-6 rounded-3xl">
+          <h1 className="text-3xl font-bold mb-6">تماس با ما</h1>
 
-        <form onSubmit={handleSubmit} className="grid gap-4">
-          <input name="name" placeholder="Name" className="input" />
-          <input name="phone" placeholder="Phone" className="input" />
-          <input name="email" placeholder="Email" className="input" />
+          <form onSubmit={handleSubmit} className="grid gap-4">
+            <input name="name" placeholder="نام" className="input" />
+            <input name="phone" placeholder="شماره تماس" className="input" />
+            <input name="email" placeholder="ایمیل" className="input" />
+            <textarea name="message" placeholder="پیام شما" className="input" />
 
-          <textarea name="message" placeholder="Message" className="input" />
-
-          <button className="btn-primary" disabled={loading}>
-            {loading ? "Sending..." : "Send Message"}
-          </button>
-        </form>
+            <button disabled={loading} className="btn-primary">
+              {loading ? "در حال ارسال..." : "ارسال پیام"}
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );

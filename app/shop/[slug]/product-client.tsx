@@ -25,10 +25,10 @@ export default function ProductClient({ product }: { product: any }) {
   };
 
   const whatsappMessage = encodeURIComponent(
-    `Hello, I want:
-• Product: ${product.name}
-• Quantity: ${qty}
-• Total: ${totalPrice}$
+    `سلام من میخوام :
+• محصول: ${product.name}
+• تعداد: ${qty}
+• مجموع: ${totalPrice}$
 `,
   );
 
@@ -36,7 +36,7 @@ export default function ProductClient({ product }: { product: any }) {
     <div className="section">
       <div className="container-custom grid md:grid-cols-2 gap-10">
         {/* IMAGE */}
-        <div className="relative h-[400px] md:h-[500px] rounded-3xl overflow-hidden shadow-lg">
+        <div className="relative h-100 md:h-125 rounded-3xl overflow-hidden shadow-lg">
           <Image
             src={product.image}
             alt={product.name}
@@ -91,13 +91,13 @@ export default function ProductClient({ product }: { product: any }) {
 
           {/* Total */}
           <p className="mt-3 text-gray-700">
-            Total: <b>{formatPrice(totalPrice)}</b>
+            جمع کل: <b>{formatPrice(totalPrice)}</b>
           </p>
 
           {/* Actions */}
           <div className="mt-8 flex flex-wrap gap-3">
             <button onClick={handleAddToCart} className="btn-primary">
-              Add {qty} to Cart
+              اضافه کردن {qty} به سبد خرید
             </button>
 
             <a
@@ -106,7 +106,7 @@ export default function ProductClient({ product }: { product: any }) {
               rel="noopener noreferrer"
               className="px-6 py-3 border rounded-full"
             >
-              WhatsApp Buy
+              خرید از واتساپ
             </a>
 
             <button

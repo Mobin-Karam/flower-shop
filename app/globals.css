@@ -3,102 +3,102 @@
 /* ---------------- FONT ---------------- */
 @font-face {
   font-family: "Vazirmatn";
-  src: url("/fonts/Vazirmatn/static/Vazirmatn-Regular.ttf") format("truetype");
-  font-weight: 400;
-}
+    src: url("/fonts/Vazirmatn/static/Vazirmatn-Regular.ttf") format("truetype");
+      font-weight: 400;
+      }
 
-@font-face {
-  font-family: "Vazirmatn";
-  src: url("/fonts/Vazirmatn/static/Vazirmatn-Medium.ttf") format("truetype");
-  font-weight: 500;
-}
+      @font-face {
+        font-family: "Vazirmatn";
+          src: url("/fonts/Vazirmatn/static/Vazirmatn-Medium.ttf") format("truetype");
+            font-weight: 500;
+            }
 
-/* ---------------- THEME (3 CORE COLORS) ---------------- */
-@theme {
-  /* 🍃 Primary: Persian tea / herbs */
-  --primary: #2f6f5e;
+            /* ---------------- THEME (3 CORE COLORS) ---------------- */
+            @theme {
+              /* 🍃 Primary: Persian tea / herbs */
+                --primary: #2f6f5e;
 
-  /* 🪵 Secondary: clay / ceramic / Persian pottery */
-  --secondary: #d6b89c;
+                  /* 🪵 Secondary: clay / ceramic / Persian pottery */
+                    --secondary: #d6b89c;
 
-  /* 🌙 Accent: deep calm night / luxury contrast */
-  --accent: #1f2a44;
+                      /* 🌙 Accent: deep calm night / luxury contrast */
+                        --accent: #1f2a44;
 
-  /* base */
-  --background: #f7f5f0;
-  --foreground: #1b1b1b;
-}
+                          /* base */
+                            --background: #f7f5f0;
+                              --foreground: #1b1b1b;
+                              }
 
-/* ---------------- BASE STYLES ---------------- */
-@layer base {
-  body {
-    font-family: "Vazirmatn", sans-serif;
-    background: var(--background);
-    color: var(--foreground);
-    letter-spacing: -0.2px;
-    line-height: 1.7;
-  }
+                              /* ---------------- BASE STYLES ---------------- */
+                              @layer base {
+                                body {
+                                    font-family: "Vazirmatn", sans-serif;
+                                        background: var(--background);
+                                            color: var(--foreground);
+                                                letter-spacing: -0.2px;
+                                                    line-height: 1.7;
+                                                      }
 
-  * {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
+                                                        * {
+                                                            -webkit-font-smoothing: antialiased;
+                                                                -moz-osx-font-smoothing: grayscale;
+                                                                  }
 
-  html {
-    scroll-behavior: smooth;
-  }
-}
+                                                                    html {
+                                                                        scroll-behavior: smooth;
+                                                                          }
+                                                                          }
 
-/* ---------------- LAYOUT ---------------- */
-.container-custom {
-  max-width: 1280px;
-  margin-inline: auto;
-  padding-inline: 1rem;
-}
+                                                                          /* ---------------- LAYOUT ---------------- */
+                                                                          .container-custom {
+                                                                            max-width: 1280px;
+                                                                              margin-inline: auto;
+                                                                                padding-inline: 1rem;
+                                                                                }
 
-.section {
-  padding-block: 5rem;
-}
+                                                                                .section {
+                                                                                  padding-block: 5rem;
+                                                                                  }
 
-/* ---------------- BUTTONS ---------------- */
-.btn-primary {
-  @apply px-6 py-3 rounded-full text-white transition shadow-sm;
-  background: var(--primary);
-}
+                                                                                  /* ---------------- BUTTONS ---------------- */
+                                                                                  .btn-primary {
+                                                                                    @apply px-6 py-3 rounded-full text-white transition shadow-sm;
+                                                                                      background: var(--primary);
+                                                                                      }
 
-.btn-primary:hover {
-  filter: brightness(1.05);
-}
+                                                                                      .btn-primary:hover {
+                                                                                        filter: brightness(1.05);
+                                                                                        }
 
-.btn-secondary {
-  @apply px-6 py-3 rounded-full transition;
-  background: var(--secondary);
-  color: var(--accent);
-}
+                                                                                        .btn-secondary {
+                                                                                          @apply px-6 py-3 rounded-full transition;
+                                                                                            background: var(--secondary);
+                                                                                              color: var(--accent);
+                                                                                              }
 
-/* ---------------- CARDS ---------------- */
-.card {
-  @apply bg-white rounded-3xl shadow-sm;
-  border: 1px solid rgba(31, 42, 68, 0.06);
-}
+                                                                                              /* ---------------- CARDS ---------------- */
+                                                                                              .card {
+                                                                                                @apply bg-white rounded-3xl shadow-sm;
+                                                                                                  border: 1px solid rgba(31, 42, 68, 0.06);
+                                                                                                  }
 
-/* ---------------- CALM PERSIAN BACKGROUND ---------------- */
-.gradient-bg {
-  background: linear-gradient(
-    135deg,
-    #f7f5f0,
-    #efe7dd,
-    #f7f5f0
-  );
-}
+                                                                                                  /* ---------------- CALM PERSIAN BACKGROUND ---------------- */
+                                                                                                  .gradient-bg {
+                                                                                                    background: linear-gradient(
+                                                                                                        135deg,
+                                                                                                            #f7f5f0,
+                                                                                                                #efe7dd,
+                                                                                                                    #f7f5f0
+                                                                                                                      );
+                                                                                                                      }
 
-/* ---------------- INPUTS ---------------- */
-.input {
-  @apply w-full p-3 rounded-xl outline-none transition;
-  border: 1px solid rgba(47, 111, 94, 0.2);
-}
+                                                                                                                      /* ---------------- INPUTS ---------------- */
+                                                                                                                      .input {
+                                                                                                                        @apply w-full p-3 rounded-xl outline-none transition;
+                                                                                                                          border: 1px solid rgba(47, 111, 94, 0.2);
+                                                                                                                          }
 
-.input:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(47, 111, 94, 0.15);
-}
+                                                                                                                          .input:focus {
+                                                                                                                            border-color: var(--primary);
+                                                                                                                              box-shadow: 0 0 0 3px rgba(47, 111, 94, 0.15);
+                                                                                                                              }

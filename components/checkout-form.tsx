@@ -96,15 +96,15 @@ Note: ${payload.note ?? ""}
 
   return (
     <form onSubmit={handleSubmit} className="grid gap-4">
-      <input name="name" placeholder="Full Name" className="input" />
-      <input name="phone" placeholder="Phone" className="input" />
-      <input name="email" placeholder="Email (optional)" className="input" />
-      <input name="address" placeholder="Address" className="input" />
+      <input name="name" placeholder="نام و نام خانوادگی" className="input" />
+      <input name="phone" placeholder="شماره موبایل" className="input" />
+      <input name="email" placeholder="ایمیل(اختیاری)" className="input" />
+      <input name="address" placeholder="آدرس" className="input" />
 
-      <textarea name="message" placeholder="Notes" className="input" />
+      <textarea name="message" placeholder="توضیحات" className="input" />
 
       <button disabled={loading} className="btn-primary">
-        {loading ? "Sending..." : "Place Order"}
+        {loading ? "در حال ارسال ..." : "ارسال سفارش"}
       </button>
     </form>
   );

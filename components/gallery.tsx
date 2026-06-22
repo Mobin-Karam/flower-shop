@@ -4,10 +4,6 @@ import SectionTitle from "./section-title";
 const images = [
   "/flowers/rose-1.jpg",
   "/flowers/rose-2.jpg",
-  "/flowers/rose-3.jpg",
-  "/flowers/rose-4.jpg",
-  "/flowers/rose-5.jpg",
-  "/flowers/rose-6.jpg",
 ];
 
 export default function Gallery() {

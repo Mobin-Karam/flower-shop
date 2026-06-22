@@ -1,29 +1,30 @@
-import type { Metadata } from "next"
-import "./globals.css"
+import type { Metadata } from "next";
+import "./globals.css";
 
-import Navbar from "@/components/navbar"
-import Footer from "@/components/footer"
-import WhatsappButton from "@/components/whatsapp-button"
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
+import WhatsappButton from "@/components/whatsapp-button";
 import MobileBottomNav from "@/components/mobile-bottom-nav";
-
-import { Toaster } from "sonner"
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Gol Mohammadi Flower Shop",
-  description:
-    "Fresh flowers and beautiful bouquets for every occasion.",
-}
+  description: "Fresh flowers and beautiful bouquets for every occasion.",
+
+  icons: {
+    icon: "/logo/logo.png",
+    shortcut: "/logo/logo.png",
+    apple: "/logo/logo.png",
+  },
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
-    <html  
-       lang="fa"
-      dir="rtl"
-      >
+    <html lang="fa" dir="rtl">
       <body>
         <Navbar />
         <MobileBottomNav />
@@ -31,11 +32,10 @@ export default function RootLayout({
         <main>{children}</main>
 
         <Footer />
-
         <WhatsappButton />
 
-        <Toaster richColors  />
+        <Toaster richColors position="top-left" />
       </body>
     </html>
-  )
+  );
 }

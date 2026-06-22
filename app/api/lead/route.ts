@@ -9,10 +9,11 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    // ✅ SERVER-SIDE VALIDATION (IMPORTANT FIX)
     const parsed = checkoutSchema.safeParse(body);
 
     if (!parsed.success) {
+      console.log(parsed.error.format());
+
       return NextResponse.json(
         { success: false, error: "Invalid form data" },
         { status: 400 }
@@ -26,18 +27,18 @@ export async function POST(req: Request) {
       address,
       note,
       email,
-      items,
-      total,
+      items = [],
+      total = 0,
       productTitle,
       brand,
     } = parsed.data;
 
     const sessionId = createSessionId();
 
-    const itemsText = (items ?? [])
+    const itemsText = items
       .map(
-        (i: any) =>
-          `- ${i.name} x${i.quantity} = $${i.price * i.quantity}`
+        (i) =>
+          `- ${i.name} x${i.quantity} = ${i.price * i.quantity}`
       )
       .join("\n");
 
@@ -52,7 +53,7 @@ export async function POST(req: Request) {
 📍 آدرس: ${address}
 
 📦 سفارش:
-${itemsText}
+${itemsText || "-"}
 
 💰 جمع کل: ${total}
 
@@ -62,14 +63,11 @@ ${itemsText}
 📦 محصول: ${productTitle || "-"}
 `;
 
-    // ✅ Send to Bale
     const res = await fetch(
       `https://tapi.bale.ai/bot${TOKEN}/sendMessage`,
       {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           chat_id: CHANNEL,
           text: caption,
@@ -91,6 +89,8 @@ ${itemsText}
       sessionId,
     });
   } catch (err) {
+    console.error(err);
+
     return NextResponse.json(
       { success: false, error: "Server error" },
       { status: 500 }

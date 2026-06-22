@@ -8,6 +8,7 @@ import { toast } from "sonner";
 export default function CheckoutForm() {
   const items = useCartStore((s) => s.items);
   const clearCart = useCartStore((s) => s.clearCart);
+
   const total = useCartStore((s) => s.getTotalPrice());
 
   const [loading, setLoading] = useState(false);
@@ -33,18 +34,21 @@ export default function CheckoutForm() {
     const payload = {
       fullName: getValue(form, "name"),
       phone: getValue(form, "phone"),
-      city: getValue(form, "city"), // NOTE: you DON'T have city input in UI right now
+      city: getValue(form, "city"),
       address: getValue(form, "address"),
       note: getValue(form, "message"),
-      email: getValue(form, "email"),
+      email: getValue(form, "email") || undefined,
+      items,
+      total: typeof total === "number" ? total : 0,
+      productTitle: "Flower Order",
+      brand: "Gol Mohammadi Shop",
     };
 
     const parsed = checkoutSchema.safeParse(payload);
 
     if (!parsed.success) {
-      console.log("Validation error:", parsed.error.format());
-
-      toast.error("Please fill all required fields");
+      console.log(parsed.error.format());
+      toast.error("Please fill all required fields correctly");
       setLoading(false);
       return;
     }
@@ -55,13 +59,7 @@ export default function CheckoutForm() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          ...parsed.data,
-          items,
-          total,
-          productTitle: "Flower Order",
-          brand: "Gol Mohammadi Shop",
-        }),
+        body: JSON.stringify(parsed.data),
       });
 
       const result = await res.json();
@@ -87,7 +85,9 @@ export default function CheckoutForm() {
         <h2 className="text-3xl font-bold text-green-600">
           Order Sent Successfully 🌸
         </h2>
-        <p className="mt-4 text-gray-600">We will contact you soon.</p>
+        <p className="mt-4 text-gray-600">
+          We will contact you soon.
+        </p>
       </div>
     );
   }
@@ -97,8 +97,8 @@ export default function CheckoutForm() {
       <input name="name" placeholder="نام و نام خانوادگی" className="input" />
       <input name="phone" placeholder="شماره موبایل" className="input" />
 
-      {/* Optional: REMOVE if schema requires it */}
-      {/* <input name="city" placeholder="شهر" className="input" /> */}
+      {/* REQUIRED because schema requires it */}
+      <input name="city" placeholder="شهر" className="input" />
 
       <input name="email" placeholder="ایمیل (اختیاری)" className="input" />
       <input name="address" placeholder="آدرس" className="input" />

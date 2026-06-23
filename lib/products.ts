@@ -1,24 +1,35 @@
 import { Product } from "./types";
 
+// Example product data
 export const products: Product[] = [
   {
     id: "1",
     slug: "golbarg-gol-mohammadi",
     name: "دمنوش و پر گل محمدی چهل چای (۴۰ گرم)",
-    price: 50000,
+    description: "گل سرخ طبیعی و خوشخوند از باغ‌های کردستان",
+    price: 80000,
+    originalPrice: 100000,
     image: "/flowers/rose-1.jpg",
-    category: "دمنوش گیاهی",
-    description:
-      "ترکیبی ملایم از گیاهان آرام‌بخش برای کاهش استرس و ایجاد آرامش ذهن.",
+    rating: 4.7,
+    reviewCount: 1302,
+    inStock: true,
+    isBestseller: true,
+    isNew: false,
+    freeShipping: true,
   },
-
   {
     id: "2",
     slug: "ghonche-gol-mohammadi",
     name: "غنچه گل محمدی امسالی ۲۵ گرمی",
-    price: 45000,
+    price: 105000,
+    originalPrice: 120000,
     image: "/flowers/rose-2.jpg",
-    category: "دمنوش شب",
-    description: "مناسب برای قبل از خواب، کمک به آرامش اعصاب و خواب عمیق‌تر.",
-  }
+    description: "بابونه خشک شده طبیعی برای آرامش و خواب بهتر",
+    rating: 4.5,
+    reviewCount: 1426,
+    inStock: true,
+    isBestseller: false,
+    isNew: true,
+    freeShipping: true,
+  },
 ];

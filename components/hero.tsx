@@ -121,14 +121,14 @@ function Hero() {
             />
 
             {/* Logo container */}
-            <div className="relative w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden ring-2 ring-white/20 shadow-[0_8px_40px_rgba(0,0,0,0.45)] backdrop-blur-sm bg-white/5">
+            <div className="relative w-48 h-48 md:w-48 md:h-48 rounded-full overflow-hidden ring-2 ring-white/20 shadow-[0_8px_40px_rgba(0,0,0,0.45)] backdrop-blur-sm bg-white/5">
               <Image
                 src="/logo/logo.png"
-                alt="لوگوی گل محمدی"
+                alt="لوگوی گل محمدی"        
                 fill
                 priority
                 quality={90}
-                sizes="(max-width:768px) 96px, 128px"
+                sizes="(max-width:768px) 256px, 516px"
                 className="object-contain p-2"
               />
             </div>

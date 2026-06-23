@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { formatPrice } from "@/lib/format";
 import { products } from "@/lib/products";
 import { useCartStore } from "@/store/cart-store";
@@ -18,10 +18,15 @@ export default function ProductClient({ product }: { product: any }) {
 
   const totalPrice = product.price * qty;
 
+  const discountPercent = useMemo(() => {
+    if (!product.originalPrice) return 0;
+    return Math.round(
+      ((product.originalPrice - product.price) / product.originalPrice) * 100,
+    );
+  }, [product]);
+
   const handleAddToCart = () => {
-    for (let i = 0; i < qty; i++) {
-      addItem(product);
-    }
+    for (let i = 0; i < qty; i++) addItem(product);
   };
 
   const whatsappMessage = encodeURIComponent(
@@ -43,32 +48,85 @@ export default function ProductClient({ product }: { product: any }) {
             fill
             className="object-cover"
           />
+
+          {/* Badges */}
+          <div className="absolute top-3 left-3 flex flex-col gap-2">
+            {product.isBestseller && (
+              <span className="text-xs bg-orange-500 text-white px-3 py-1 rounded-full">
+                پرفروش
+              </span>
+            )}
+
+            {product.isNew && (
+              <span className="text-xs bg-green-500 text-white px-3 py-1 rounded-full">
+                جدید
+              </span>
+            )}
+
+            {discountPercent > 0 && (
+              <span className="text-xs bg-red-500 text-white px-3 py-1 rounded-full">
+                %{discountPercent} تخفیف
+              </span>
+            )}
+          </div>
+
+          {/* Wishlist */}
+          <button
+            onClick={() => setLiked(!liked)}
+            className="absolute top-3 right-3 bg-white/90 p-2 rounded-full shadow"
+          >
+            {liked ? "❤️" : "🤍"}
+          </button>
         </div>
 
         {/* DETAILS */}
         <div>
-          {/* Badge */}
+          {/* Category + Stock */}
           <div className="flex items-center gap-2">
             <span className="text-xs px-3 py-1 bg-pink-100 text-pink-700 rounded-full">
               {product.category}
             </span>
 
-            <span className="text-xs text-green-600">In Stock</span>
+            <span
+              className={`text-xs px-3 py-1 rounded-full ${
+                product.inStock
+                  ? "bg-green-100 text-green-700"
+                  : "bg-red-100 text-red-700"
+              }`}
+            >
+              {product.inStock ? "موجود" : "ناموجود"}
+            </span>
           </div>
 
           <h1 className="text-4xl font-bold mt-3">{product.name}</h1>
 
-          {/* Fake rating (Amazon style) */}
-          <div className="text-yellow-500 mt-2">
-            ★★★★☆ <span className="text-gray-500">(124 reviews)</span>
+          {/* Rating */}
+          <div className="flex items-center gap-2 mt-2">
+            <span className="text-yellow-500">
+              {"★".repeat(Math.floor(product.rating || 4))}
+              {"☆".repeat(5 - Math.floor(product.rating || 4))}
+            </span>
+            <span className="text-gray-500 text-sm">
+              ({product.reviewCount || 0} نظر)
+            </span>
           </div>
 
           <p className="text-gray-600 mt-4">{product.description}</p>
 
           {/* Price */}
-          <p className="text-3xl text-pink-700 font-bold mt-6">
-            {formatPrice(product.price)}
-          </p>
+          <div className="mt-6">
+            <p className="text-3xl text-pink-700 font-bold">
+              {formatPrice(product.price)}
+            </p>
+
+            {product.originalPrice && (
+              <p className="text-gray-400 line-through text-sm mt-1">
+                {formatPrice(product.originalPrice)}
+              </p>
+            )}
+
+            <p className="text-green-600 text-sm mt-1">ارسال رایگان ✨</p>
+          </div>
 
           {/* Quantity */}
           <div className="mt-6 flex items-center gap-3">
@@ -97,7 +155,7 @@ export default function ProductClient({ product }: { product: any }) {
           {/* Actions */}
           <div className="mt-8 flex flex-wrap gap-3">
             <button onClick={handleAddToCart} className="btn-primary">
-              اضافه کردن {qty} به سبد خرید
+              افزودن {qty} عدد به سبد خرید
             </button>
 
             <a
@@ -109,11 +167,8 @@ export default function ProductClient({ product }: { product: any }) {
               خرید از واتساپ
             </a>
 
-            <button
-              onClick={() => setLiked(!liked)}
-              className="px-4 py-3 border rounded-full"
-            >
-              {liked ? "❤️ Saved" : "🤍 Wishlist"}
+            <button className="px-4 py-3 border rounded-full">
+              {liked ? "❤️ ذخیره شد" : "🤍 علاقه‌مندی"}
             </button>
 
             <button
@@ -126,16 +181,16 @@ export default function ProductClient({ product }: { product: any }) {
               }
               className="px-4 py-3 border rounded-full"
             >
-              Share
+              اشتراک‌گذاری
             </button>
           </div>
         </div>
       </div>
 
-      {/* RELATED PRODUCTS */}
+      {/* RELATED */}
       {related.length > 0 && (
         <div className="mt-16">
-          <h2 className="text-2xl font-bold mb-6">Related Products</h2>
+          <h2 className="text-2xl font-bold mb-6">محصولات مشابه</h2>
 
           <div className="grid md:grid-cols-3 gap-6">
             {related.map((item) => (
@@ -162,7 +217,7 @@ export default function ProductClient({ product }: { product: any }) {
                   href={`/shop/${item.slug}`}
                   className="text-sm text-blue-600 mt-2 inline-block"
                 >
-                  View Product →
+                  مشاهده محصول →
                 </a>
               </div>
             ))}

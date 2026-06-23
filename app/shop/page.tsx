@@ -2,94 +2,105 @@
 
 import { products } from "@/lib/products";
 import ProductCard from "@/components/product-card";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 export default function ShopPage() {
   const [search, setSearch] = useState("");
 
-  const filtered = products.filter((p) =>
-    p.name.toLowerCase().includes(search.toLowerCase())
-  );
+  const tags = ["آرامش", "خواب", "انرژی", "گل رز", "دمنوش گیاهی"];
+
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    if (!q) return products;
+
+    return products.filter((p) =>
+      p.name.toLowerCase().includes(q)
+    );
+  }, [search]);
 
   return (
-    <div className="section font-[Vazirmatn] bg-linear-to-b from-[#f7f5f0] to-[#efe7dd]">
-
-      <div className="container-custom">
-
-        {/* 🌿 Header (Shop identity like real boutique) */}
-        <div className="text-center max-w-2xl mx-auto">
-
-          <p className="text-sm text-[#2f6f5e] tracking-widest">
-            فروشگاه دمنوش و آرامش
+    <div className="min-h-screen gradient-bg">
+      {/* HEADER */}
+      <header className="section">
+        <div className="container-custom text-center space-y-4">
+          <p className="text-xs tracking-[0.25em] text-[var(--primary)] uppercase">
+            فروشگاه دمنوش‌های طبیعی
           </p>
 
-          <h1 className="text-4xl md:text-5xl font-bold mt-3 text-[#1f2a44]">
-            فروشگاه گل محمدی
-          </h1>
-
-          <p className="mt-4 text-gray-600 leading-relaxed">
-            انتخابی از دمنوش‌های طبیعی، گل‌های آرامش‌بخش و ترکیب‌های الهام‌گرفته از طبیعت ایران
+          <p className="text-sm text-[var(--foreground)]/70 max-w-xl mx-auto leading-loose">
+            مجموعه‌ای انتخاب‌شده از دمنوش‌های گیاهی و گل‌های ارگانیک الهام‌گرفته
+            از طبیعت و سنت ایرانی
           </p>
-
         </div>
+      </header>
 
-        {/* 🌿 Search Bar (shop-like, centered card feel) */}
-        <div className="mt-10 flex justify-center">
-
-          <div className="w-full md:w-1/2 bg-white rounded-full shadow-sm border border-black/5 px-4 flex items-center">
-
+      {/* CONTENT */}
+      <main className="pb-16">
+        <div className="container-custom space-y-8">
+          {/* SEARCH */}
+          <div className="space-y-4">
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="جستجوی دمنوش یا گل..."
-              className="w-full p-3 outline-none bg-transparent"
+              placeholder="جستجو در محصولات..."
+              className="input"
             />
 
+            {/* TAGS */}
+            <div className="flex gap-2 flex-wrap">
+              {tags.map((tag) => {
+                const active = search === tag;
+
+                return (
+                  <button
+                    key={tag}
+                    onClick={() => setSearch(active ? "" : tag)}
+                    className={`px-4 py-2 text-xs rounded-full border transition
+                      ${
+                        active
+                          ? "bg-[var(--primary)] text-white border-[var(--primary)]"
+                          : "bg-white/60 text-[var(--foreground)]/70 border-black/5 hover:border-[var(--primary)]/40"
+                      }`}
+                  >
+                    {tag}
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
-        </div>
-
-        {/* 🌿 Quick tags (real shop UX) */}
-        <div className="mt-6 flex justify-center flex-wrap gap-3">
-
-          {["آرامش", "خواب", "انرژی", "گل رز", "دمنوش گیاهی"].map((tag) => (
-            <button
-              key={tag}
-              onClick={() => setSearch(tag)}
-              className="px-4 py-2 text-sm rounded-full bg-white border border-black/5 text-[#2f6f5e] hover:bg-[#2f6f5e] hover:text-white transition"
-            >
-              {tag}
-            </button>
-          ))}
-
-        </div>
-
-        {/* 🌿 Products Grid */}
-        <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-7">
-
-          {filtered.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-
-        </div>
-
-        {/* 🌿 Empty State (real shop feeling) */}
-        {filtered.length === 0 && (
-          <div className="text-center mt-16">
-            <p className="text-gray-500 text-lg">
-              محصولی برای جستجوی شما پیدا نشد 🍃
+          {/* RESULTS */}
+          <div className="space-y-3">
+            <p className="text-xs text-[var(--foreground)]/50">
+              {filtered.length} محصول
             </p>
 
-            <button
-              onClick={() => setSearch("")}
-              className="mt-4 px-6 py-3 rounded-full bg-[#2f6f5e] text-white hover:opacity-90 transition"
-            >
-              مشاهده همه محصولات
-            </button>
-          </div>
-        )}
+            {filtered.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {filtered.map((product) => (
+                  <div key={product.id} className="card p-3 sm:p-4">
+                    <ProductCard product={product} />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              /* EMPTY STATE */
+              <div className="py-20 text-center space-y-4">
+                <p className="text-sm text-[var(--foreground)]/50">
+                  محصولی یافت نشد
+                </p>
 
-      </div>
+                <button
+                  onClick={() => setSearch("")}
+                  className="btn-primary"
+                >
+                  مشاهده همه محصولات
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </main>
     </div>
   );
 }

@@ -16,7 +16,7 @@ export const checkoutSchema = z.object({
         name: z.string(),
         quantity: z.number(),
         price: z.number(),
-      })
+      }),
     )
     .optional(),
 
@@ -25,5 +25,17 @@ export const checkoutSchema = z.object({
   productTitle: z.string().optional(),
   brand: z.string().optional(),
 });
+
+export const contactSchema = z.object({
+  name: z.string().min(2, "نام الزامی است").max(100),
+
+  phone: z.string().min(8, "شماره تماس نامعتبر است").max(20),
+
+  email: z.string().email("ایمیل نامعتبر است").optional().or(z.literal("")),
+
+  message: z.string().min(5, "پیام خیلی کوتاه است").max(2000),
+});
+
+export type ContactInput = z.infer<typeof contactSchema>;
 
 export type CheckoutFormData = z.infer<typeof checkoutSchema>;

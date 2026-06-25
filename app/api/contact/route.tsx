@@ -3,7 +3,7 @@ import { contactSchema } from "../../../lib/schema";
 import { createSessionId } from "../../../lib/bale/context";
 
 const TOKEN = process.env.BALE_BOT_TOKEN!;
-const CHANNEL = process.env.BALE_CHANNEL!;
+const CHANNEL = process.env.BALE_SELL_CHANNEL!;
 
 export async function POST(req: Request) {
   try {

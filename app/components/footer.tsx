@@ -52,15 +52,21 @@ export default function Footer() {
             <button
               onClick={scrollToTop}
               className="
-            bg-primary text-primary-foreground
-            p-3 rounded-full shadow-lg
-            hover:scale-105 active:scale-95
-            transition-all
-            text-center flex
-          "
+
+      flex items-center gap-2
+      px-4 py-3 rounded-full
+
+      bg-primary text-primary-foreground
+      shadow-lg
+
+      hover:scale-105 active:scale-95
+      transition-all duration-200
+
+      text-sm font-medium
+    "
             >
-              <p className="">برگشت به بالا</p>
               <ArrowUp size={18} />
+              <span>برگشت به بالا</span>
             </button>
           )}
         </div>

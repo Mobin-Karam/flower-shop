@@ -11,8 +11,8 @@ export const products: Product[] = [
     price: 100000,
     originalPrice: 120000,
 
-    image: "/flowers/rose-2.jpg",
-    images: ["/flowers/rose-2.jpg"],
+    image: "/flowers/golbarg1.jpg",
+    images: ["/flowers/golbarg1.jpg","/flowers/golbarg2.jpg", "/flowers/golbarg3.jpg","/flowers/golbarg4.jpg","/flowers/golbarg5.jpg"],
 
     rating: 5,
     reviewCount: 1,
@@ -69,8 +69,8 @@ export const products: Product[] = [
     price: 120000,
     originalPrice: 140000,
 
-    image: "/flowers/rose-1.jpg",
-    images: ["/flowers/rose-1.jpg"],
+    image: "/flowers/khonche1.jpg",
+    images: ["/flowers/khonche1.jpg", "/flowers/khonche2.jpg", "/flowers/khonche3.jpg", "/flowers/khonche4.jpg", "/flowers/khonche5.jpg"],
 
     rating: 5,
     reviewCount: 1,

@@ -18,15 +18,10 @@ export default function CartItem({ item }: Props) {
   const remove = useCartStore((s) => s.removeItem);
 
   return (
-    <div className="flex gap-4 p-4 border rounded-xl bg-white">
+    <div className="flex gap-4 p-4 rounded-xl border border-border bg-card transition hover:bg-muted/30">
       {/* IMAGE */}
-      <div className="relative w-24 h-24 shrink-0">
-        <Image
-          src={item.image}
-          alt={item.name}
-          fill
-          className="object-cover rounded-lg"
-        />
+      <div className="relative w-24 h-24 shrink-0 rounded-lg overflow-hidden border border-border">
+        <Image src={item.image} alt={item.name} fill className="object-cover" />
       </div>
 
       {/* CONTENT */}
@@ -45,11 +40,13 @@ export default function CartItem({ item }: Props) {
 
         {/* ACTIONS */}
         <div className="flex items-center gap-2 mt-3">
-          <div className="flex items-center border rounded-lg overflow-hidden">
+          {/* QUANTITY CONTROL */}
+          <div className="flex items-center border border-border rounded-lg overflow-hidden bg-background">
             <Button
               variant="ghost"
               size="icon"
               onClick={() => decrease(item.key)}
+              className="hover:bg-muted"
             >
               <Minus size={16} />
             </Button>
@@ -60,16 +57,18 @@ export default function CartItem({ item }: Props) {
               variant="ghost"
               size="icon"
               onClick={() => increase(item.key)}
+              className="hover:bg-muted"
             >
               <Plus size={16} />
             </Button>
           </div>
 
+          {/* DELETE */}
           <Button
             variant="ghost"
             size="icon"
-            className="text-red-500"
             onClick={() => remove(item.key)}
+            className="text-destructive hover:text-destructive hover:bg-destructive/10"
           >
             <Trash2 size={16} />
           </Button>

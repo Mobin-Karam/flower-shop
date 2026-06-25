@@ -73,7 +73,7 @@ export default function CheckoutForm() {
       total: Number(total ?? 0),
 
       productTitle: "سفارش جدید",
-      brand: "فروشگاه چهل چای",
+      brand: "فروشگاه گلیفای",
     };
 
     const parsed = checkoutSchema.safeParse(payload);

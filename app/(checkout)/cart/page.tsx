@@ -15,7 +15,7 @@ export default function CartPage() {
   const totalItems = useCartStore((s) => s.getTotalItems());
 
   return (
-    <div className="bg-gray-50 min-h-screen" dir="rtl">
+    <div className="min-h-screen bg-background text-foreground" dir="rtl">
       <div className="container-custom py-6">
         {/* HEADER */}
         <div className="mb-6">
@@ -47,7 +47,7 @@ export default function CartPage() {
 
                 <Button
                   variant="ghost"
-                  className="text-red-500"
+                  className="text-destructive hover:text-destructive hover:bg-destructive/10"
                   onClick={clear}
                 >
                   حذف همه
@@ -62,7 +62,7 @@ export default function CartPage() {
               </div>
             </div>
 
-            {/* RIGHT SIDE (SUMMARY) */}
+            {/* RIGHT SIDE */}
             <div className="lg:sticky lg:top-6 h-fit space-y-4">
               <Card className="p-5 space-y-4">
                 <h2 className="font-semibold text-sm">خلاصه سفارش</h2>
@@ -74,10 +74,12 @@ export default function CartPage() {
 
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">تخفیف</span>
-                  <span className="text-green-600">محاسبه در پرداخت</span>
+                  <span className="text-emerald-500 dark:text-emerald-400">
+                    محاسبه در پرداخت
+                  </span>
                 </div>
 
-                <div className="border-t pt-3 flex justify-between font-bold">
+                <div className="border-t border-border pt-3 flex justify-between font-bold">
                   <span>مبلغ قابل پرداخت</span>
                   <span>{formatPrice(total)}</span>
                 </div>

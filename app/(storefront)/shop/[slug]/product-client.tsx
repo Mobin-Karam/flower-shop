@@ -76,11 +76,19 @@ export default function ProductClient({ product }: { product: Product }) {
     addItem({ product, variantId: activeVariant?.id, quantity: 1 });
   };
 
+  /* ================= IMAGES ================= */
   const lightBoxImages = useMemo(() => {
     if (activeVariant?.images?.length) return activeVariant.images;
     if (product.images?.length) return product.images;
     return [product.image];
   }, [activeVariant, product]);
+
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  // reset index when images change (important for variants)
+  useEffect(() => {
+    setActiveIndex(0);
+  }, [activeVariant, product.id]);
 
   return (
     <div className="bg-background pb-[160px] lg:pb-0">
@@ -89,9 +97,13 @@ export default function ProductClient({ product }: { product: Product }) {
         <div className="space-y-3">
           <Card>
             <CardContent className="p-0 relative aspect-square">
-              <ImageLightbox images={lightBoxImages} alt={product.name}>
+              <ImageLightbox
+                images={lightBoxImages}
+                alt={product.name}
+                initialIndex={activeIndex}
+              >
                 <Image
-                  src={lightBoxImages[0]}
+                  src={lightBoxImages[activeIndex]}
                   alt={product.name}
                   fill
                   className="object-cover cursor-zoom-in"
@@ -108,7 +120,6 @@ export default function ProductClient({ product }: { product: Product }) {
                 <Heart />
               </Button>
 
-              {/* CONTEXT BADGE */}
               <div className="absolute top-3 left-3">
                 <span className="text-xs bg-background/80 backdrop-blur px-2 py-1 rounded-full border flex items-center gap-1">
                   <MapPin size={12} />
@@ -118,14 +129,15 @@ export default function ProductClient({ product }: { product: Product }) {
             </CardContent>
           </Card>
 
-          {/* ================= THUMBNAILS (NEW UX) ================= */}
+          {/* ================= THUMBNAILS ================= */}
           <div className="flex gap-2 overflow-x-auto pb-1">
             {lightBoxImages.map((img, index) => {
-              const isActive = index === 0;
+              const isActive = index === activeIndex;
 
               return (
                 <button
                   key={img}
+                  onClick={() => setActiveIndex(index)}
                   className={[
                     "relative w-16 h-16 flex-shrink-0 rounded-md overflow-hidden border transition",
                     isActive ? "border-primary" : "border-border",
@@ -183,7 +195,7 @@ export default function ProductClient({ product }: { product: Product }) {
           </div>
         </div>
 
-        {/* ================= DESKTOP BUY ================= */}
+        {/* ================= BUY ================= */}
         <div className="hidden lg:block lg:sticky lg:top-24">
           <Card>
             <CardContent className="p-4 space-y-4">
@@ -221,7 +233,7 @@ export default function ProductClient({ product }: { product: Product }) {
         </div>
       </div>
 
-      {/* ================= MOBILE CTA (SYNCED LAYER) ================= */}
+      {/* ================= MOBILE CTA ================= */}
       <div
         className={[
           "fixed bottom-0 left-0 right-0 md:hidden z-50",

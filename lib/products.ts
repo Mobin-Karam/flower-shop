@@ -62,7 +62,7 @@ export const products: Product[] = [
 
   {
     id: "2",
-    slug: "ghonche-gol-mohammadi",
+    slug: "غنچه-گل-محمدی-امسالی-۵۰-گرمی",
     name: "غنچه گل محمدی امسالی ۵۰ گرمی",
     description: "غنچه خشک‌شده طبیعی گل محمدی مناسب دمنوش و آرامش",
 
@@ -120,7 +120,7 @@ export const products: Product[] = [
 
   {
     id: "3",
-    slug: "kalaash-oraman",
+    slug: "گیوه-کلاش-اورامان(هورامان)",
     name: "کلاش (گیوه) اورامان",
     description: "کفش دست‌دوز محلی هورامان سبک و بادوام",
 

@@ -100,8 +100,9 @@ export const metadata: Metadata = {
     follow: true,
   },
 
+
   other: {
-    enamad: "55333083",
+    enamad: "64776736",
   },
 };
 

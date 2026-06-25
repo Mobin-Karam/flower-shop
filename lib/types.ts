@@ -1,26 +1,136 @@
 
+
 export interface Product {
+  /* ================= CORE ================= */
   id: string;
   slug: string;
   name: string;
   description: string;
-  price: number;
-  originalPrice?: number; // Optional: for showing discounts
+
   image: string;
-  
-  // New fields for Digicala-style card
-  rating?: number; // 0-5 stars (default: 4.5)
-  reviewCount?: number; // Number of reviews (default: 128)
-  inStock?: boolean; // Stock availability (default: true)
-  isBestseller?: boolean; // Bestseller badge
-  isNew?: boolean; // New product badge
-  
-  // Additional optional fields
+  images?: string[];
+
+  /* ================= PRICING (BASE / FALLBACK) ================= */
+  price: number;
+  originalPrice?: number;
+
+  discountPercent?: number;
+
+  taxIncluded?: boolean;
+
+  /* ================= VARIANT SYSTEM (CRITICAL UPGRADE) ================= */
+  variants?: ProductVariant[];
+  defaultVariantId?: string;
+
+  /**
+   * If true → pricing MUST come from variant
+   * If false → single product pricing mode
+   */
+  hasVariants?: boolean;
+
+  /* ================= INVENTORY ================= */
+  inStock?: boolean;
+  stockQuantity?: number;
+  lowStockThreshold?: number;
+
+  sku?: string;
+  barcode?: string;
+
+  /* ================= CLASSIFICATION ================= */
   category?: string;
+  subcategory?: string;
   tags?: string[];
-  freeShipping?: boolean; // For delivery info badge
+
+  brand?: string;
+
+  /* ================= SHIPPING ================= */
+  freeShipping?: boolean;
+  shippingTime?: string;
+  weight?: number;
+
+  /* ================= UI FLAGS ================= */
+  isBestseller?: boolean;
+  isNew?: boolean;
+  isFeatured?: boolean;
+
+  badge?: ProductBadge;
+
+  /* ================= SOCIAL / METRICS ================= */
+  rating?: number;
+  reviewCount?: number;
+
+  viewCount?: number;
+  purchaseCount?: number;
+  wishlistCount?: number;
+
+  /* ================= SEO ================= */
+  seoTitle?: string;
+  seoDescription?: string;
+
+  /* ================= LIFECYCLE ================= */
+  createdAt?: string;
+  updatedAt?: string;
+  releaseDate?: string;
+
+  isActive?: boolean;
+  isDigital?: boolean;
+  isPhysical?: boolean;
 }
 
-export type CartItem = Product & {
-  quantity: number
+/* ================= VARIANT MODEL (UPGRADED) ================= */
+export interface ProductVariant {
+  id: string;
+  sku?: string;
+
+  name: string;
+
+  /* pricing per SKU */
+  price?: number;
+  originalPrice?: number;
+
+  /* inventory per SKU */
+  stock?: number;
+
+  /* media per SKU */
+  image?: string;
+  images?: string[];
+
+  /* attribute system (CRITICAL FOR FILTERING LIKE DIGIKALA) */
+  attributes?: Record<string, string>;
+  /**
+   * مثال:
+   * {
+   *   color: "red",
+   *   storage: "256GB",
+   *   sim: "esim"
+   * }
+   */
 }
+
+/* ================= BADGES ================= */
+export type ProductBadge =
+  | "discount"
+  | "new"
+  | "bestseller"
+  | "limited"
+  | "none";
+
+/* ================= CART ================= */
+export type CartItem = {
+  key: string;
+
+  productId: string;
+  product: Product;
+
+  variantId?: string;
+
+  quantity: number;
+  addedAt: number;
+
+  /* snapshot (DO NOT RELY ON PRODUCT LIVE DATA) */
+  unitPrice: number;
+  originalPrice?: number;
+  name: string;
+  image: string;
+  variantName?: string;
+};

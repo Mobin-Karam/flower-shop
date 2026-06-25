@@ -12,11 +12,9 @@ export async function POST(req: Request) {
     const parsed = checkoutSchema.safeParse(body);
 
     if (!parsed.success) {
-      console.log(parsed.error.format());
-
       return NextResponse.json(
         { success: false, error: "Invalid form data" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -35,52 +33,70 @@ export async function POST(req: Request) {
 
     const sessionId = createSessionId();
 
-    const itemsText = items
-      .map(
-        (i) =>
-          `- ${i.name} x${i.quantity} = ${i.price * i.quantity}`
-      )
-      .join("\n");
+    /**
+     * Normalize items safely for BOTH:
+     * - simple products
+     * - variant products
+     */
+    const safeItems = items.map((i: any) => {
+      const unitPrice = i.unitPrice ?? i.price ?? 0;
 
-    const caption = `
-📥 سفارش جدید
-🆔 ${sessionId}
+      const quantity = i.quantity ?? 1;
 
-👤 نام: ${fullName}
-📱 موبایل: ${phone}
-📧 ایمیل: ${email || "-"}
-🏙 شهر: ${city}
-📍 آدرس: ${address}
+      return {
+        name: i.name ?? "Unknown",
+        variantName: i.variantName ?? "",
+        unitPrice,
+        quantity,
+        lineTotal: unitPrice * quantity,
+      };
+    });
 
-📦 سفارش:
-${itemsText || "-"}
+    const itemsText =
+      safeItems.length > 0
+        ? safeItems
+            .map((i) => {
+              const variant = i.variantName ? ` (${i.variantName})` : "";
 
-💰 جمع کل: ${total}
+              return `- ${i.name}${variant} x${i.quantity} = ${i.lineTotal}`;
+            })
+            .join("\n")
+        : "-";
 
-📝 توضیحات: ${note || "-"}
+    const caption = `ORDER RECEIVED
+ID: ${sessionId}
 
-🏪 فروشگاه: ${brand || "-"}
-📦 محصول: ${productTitle || "-"}
-`;
+Name: ${fullName}
+Phone: ${phone}
+Email: ${email || "-"}
+City: ${city}
+Address: ${address}
 
-    const res = await fetch(
-      `https://tapi.bale.ai/bot${TOKEN}/sendMessage`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chat_id: CHANNEL,
-          text: caption,
-        }),
-      }
-    );
+Items:
+${itemsText}
 
-    const baleResult = await res.json();
+Total: ${total}
 
-    if (!res.ok || baleResult?.ok === false) {
+Note: ${note || "-"}
+
+Brand: ${brand || "-"}
+Product: ${productTitle || "-"}`;
+
+    const res = await fetch(`https://tapi.bale.ai/bot${TOKEN}/sendMessage`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        chat_id: CHANNEL,
+        text: caption,
+      }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || data?.ok === false) {
       return NextResponse.json(
-        { success: false, error: "Bale API error" },
-        { status: 500 }
+        { success: false, error: "Messaging API failed" },
+        { status: 500 },
       );
     }
 
@@ -89,11 +105,9 @@ ${itemsText || "-"}
       sessionId,
     });
   } catch (err) {
-    console.error(err);
-
     return NextResponse.json(
       { success: false, error: "Server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

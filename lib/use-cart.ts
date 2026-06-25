@@ -1,7 +1,7 @@
 "use client"
 
 import { useCartStore }
-  from "../store/cart-store"
+  from "../app/store/cart-store"
 
 export function useCart() {
   return useCartStore()

@@ -2,12 +2,16 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
 
-import Navbar from "../components/navbar";
-import Footer from "../components/footer";
-import WhatsappButton from "../components/whatsapp-button";
-import MobileBottomNav from "../components/mobile-bottom-nav";
+import Navbar from "./components/navbar";
+import Footer from "./components/footer";
+import WhatsappButton from "./components/whatsapp-button";
+import MobileBottomNav from "./components/mobile-bottom-nav";
 import { Toaster } from "sonner";
-import CartCTA from "../components/cart-cta";
+import CartCTA from "./components/cart/cart-cta";
+import { Geist } from "next/font/google";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://flower-shop-ochre-psi.vercel.app/"),
@@ -105,7 +109,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fa" dir="rtl">
+    <html lang="fa" dir="rtl" className={cn("font-sans", geist.variable)}>
       <body>
         {/* ================= STRUCTURED DATA ================= */}
         <Script id="seo-structured-data" type="application/ld+json">
@@ -186,7 +190,6 @@ export default function RootLayout({
 
         <Navbar />
 
-        <CartCTA />
         <MobileBottomNav />
 
         <main>{children}</main>

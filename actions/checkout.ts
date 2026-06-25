@@ -1,7 +1,7 @@
 "use server"
 
 import { checkoutSchema } from "../lib/schema"
-import { useCartStore } from "../store/cart-store"
+import { useCartStore } from "../app/store/cart-store"
 
 type CartItem = {
   name: string

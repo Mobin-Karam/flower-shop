@@ -3,7 +3,7 @@ import HeroCarousel from "./components/hero-carousel";
 
 import DealsRail from "./components/deals-rail";
 import CTASection2 from "../components/cta-section2";
-
+import { AnnouncementBanner } from "./components/announcement-banner";
 
 export default function HomePage() {
   return (
@@ -11,6 +11,7 @@ export default function HomePage() {
       {/* 1. TOP HERO (carousel + search like Amazon/Digikala) */}
       <section className="container-custom pt-6">
         <HeroCarousel />
+
       </section>
 
       {/* 2. CATEGORY STRIP (quick navigation like Digikala) */}
@@ -52,10 +53,6 @@ export default function HomePage() {
       {/* 8. SECONDARY PROMO BANNER */}
 
       <CTASection2 />
-      {/* 9. FINAL CONVERSION */}
-      <section className="container-custom pb-16">
-        <CTASection />
-      </section>
     </main>
   );
 }

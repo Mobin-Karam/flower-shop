@@ -8,8 +8,8 @@ export const products: Product[] = [
     description:
       "گل سرخ طبیعی و خوش‌عطر از باغ‌های کردستان، مناسب دمنوش آرامش‌بخش",
 
-    price: 90000,
-    originalPrice: 100000,
+    price: 100000,
+    originalPrice: 120000,
 
     image: "/flowers/rose-2.jpg",
     images: ["/flowers/rose-2.jpg"],
@@ -63,11 +63,11 @@ export const products: Product[] = [
   {
     id: "2",
     slug: "ghonche-gol-mohammadi",
-    name: "غنچه گل محمدی امسالی ۲۵ گرمی",
+    name: "غنچه گل محمدی امسالی ۵۰ گرمی",
     description: "غنچه خشک‌شده طبیعی گل محمدی مناسب دمنوش و آرامش",
 
-    price: 110000,
-    originalPrice: 120000,
+    price: 120000,
+    originalPrice: 140000,
 
     image: "/flowers/rose-1.jpg",
     images: ["/flowers/rose-1.jpg"],

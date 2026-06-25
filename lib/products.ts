@@ -3,7 +3,7 @@ import { Product } from "./types";
 export const products: Product[] = [
   {
     id: "1",
-    slug: "golbarg-gol-mohammadi",
+    slug: "گلبرگ-گل-محمدی-چهل-چای-امسالی",
     name: "دمنوش و پر گل محمدی چهل چای (۴۰ گرم)",
     description:
       "گل سرخ طبیعی و خوش‌عطر از باغ‌های کردستان، مناسب دمنوش آرامش‌بخش",
@@ -122,7 +122,7 @@ export const products: Product[] = [
     id: "3",
     slug: "kalaash-oraman",
     name: "کلاش (گیوه) اورامان",
-    description: "کفش دست‌دوز محلی هورامان با چرم طبیعی، سبک و بادوام",
+    description: "کفش دست‌دوز محلی هورامان سبک و بادوام",
 
     price: 2500000,
     originalPrice: 2900000,

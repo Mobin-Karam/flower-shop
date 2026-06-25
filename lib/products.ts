@@ -28,7 +28,7 @@ export const products: Product[] = [
     isNew: false,
     isFeatured: true,
 
-    freeShipping: true,
+    freeShipping: false,
     shippingTime: "2-3 روز",
 
     category: "دمنوش",
@@ -86,7 +86,7 @@ export const products: Product[] = [
     isNew: true,
     isFeatured: false,
 
-    freeShipping: true,
+    freeShipping: false,
     shippingTime: "2-4 روز",
 
     category: "دمنوش",

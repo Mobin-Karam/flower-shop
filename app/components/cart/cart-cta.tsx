@@ -15,7 +15,7 @@ import { Separator } from "@/app/components/ui/separator";
 
 import Image from "next/image";
 import { useEffect } from "react";
-import { useUIStore } from "@/store/ui-store";
+import { useUIStore } from "@/app/store/ui-store";
 
 export default function CartCTA() {
   const router = useRouter();

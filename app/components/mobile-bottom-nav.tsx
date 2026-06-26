@@ -8,7 +8,7 @@ import { Home, ShoppingBag, Phone, ShoppingCart } from "lucide-react";
 import { useCartStore } from "../store/cart-store";
 import { Badge } from "@/app/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { useUIStore } from "@/store/ui-store";
+import { useUIStore } from "@/app/store/ui-store";
 
 export default function MobileBottomNav() {
   const pathname = usePathname();

@@ -8,9 +8,6 @@ const TELEGRAM_CHANNEL = process.env.TELEGRAM_SELL_CHANNEL!;
 const BALE_TOKEN = process.env.BALE_BOT_TOKEN!;
 const BALE_CHANNEL = process.env.BALE_SELL_CHANNEL!;
 
-/**
- * Normalize cart items
- */
 function normalizeItems(items: any[]) {
   return items.map((i: any) => {
     const unitPrice = i.unitPrice ?? i.price ?? 0;
@@ -26,9 +23,17 @@ function normalizeItems(items: any[]) {
   });
 }
 
-/**
- * Build order text once
- */
+function buildItemsText(items: any[]) {
+  return items.length
+    ? items
+        .map((i) => {
+          const variant = i.variantName ? ` (${i.variantName})` : "";
+          return `- ${i.name}${variant} x${i.quantity} = ${i.lineTotal}`;
+        })
+        .join("\n")
+    : "-";
+}
+
 function buildCaption(data: any, sessionId: string, itemsText: string) {
   const {
     fullName,
@@ -65,37 +70,51 @@ Product: ${productTitle || "-"}
 }
 
 /**
- * Providers
+ * Telegram
  */
 async function sendTelegram(text: string) {
-  const res = await fetch(
-    `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        chat_id: TELEGRAM_CHANNEL,
-        text,
-      }),
-    },
-  );
+  try {
+    const res = await fetch(
+      `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: TELEGRAM_CHANNEL,
+          text,
+        }),
+      },
+    );
 
-  const data = await res.json();
-  return { ok: res.ok && data?.ok, data };
+    const data = await res.json();
+    return { success: res.ok && data?.ok, data };
+  } catch (err) {
+    return { success: false, error: err };
+  }
 }
 
+/**
+ * Bale
+ */
 async function sendBale(text: string) {
-  const res = await fetch(`https://tapi.bale.ai/bot${BALE_TOKEN}/sendMessage`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      chat_id: BALE_CHANNEL,
-      text,
-    }),
-  });
+  try {
+    const res = await fetch(
+      `https://tapi.bale.ai/bot${BALE_TOKEN}/sendMessage`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: BALE_CHANNEL,
+          text,
+        }),
+      },
+    );
 
-  const data = await res.json();
-  return { ok: res.ok && data?.ok, data };
+    const data = await res.json();
+    return { success: res.ok && data?.ok, data };
+  } catch (err) {
+    return { success: false, error: err };
+  }
 }
 
 export async function POST(req: Request) {
@@ -112,44 +131,46 @@ export async function POST(req: Request) {
     }
 
     const sessionId = createSessionId();
-    const data = parsed.data;
 
-    const safeItems = normalizeItems(data.items ?? []);
+    const safeItems = normalizeItems(parsed.data.items ?? []);
+    const itemsText = buildItemsText(safeItems);
 
-    const itemsText =
-      safeItems.length > 0
-        ? safeItems
-            .map((i) => {
-              const variant = i.variantName ? ` (${i.variantName})` : "";
-              return `- ${i.name}${variant} x${i.quantity} = ${i.lineTotal}`;
-            })
-            .join("\n")
-        : "-";
-
-    const caption = buildCaption(data, sessionId, itemsText);
+    const caption = buildCaption(parsed.data, sessionId, itemsText);
 
     /**
-     * Broadcast to both providers
+     * Run both independently (NO FAIL FAST)
      */
-    const [tg, bale] = await Promise.all([
+    const results = await Promise.allSettled([
       sendTelegram(caption),
       sendBale(caption),
     ]);
 
-    if (!tg.ok || !bale.ok) {
+    const telegramResult =
+      results[0].status === "fulfilled"
+        ? results[0].value
+        : { success: false, error: results[0].reason };
+
+    const baleResult =
+      results[1].status === "fulfilled"
+        ? results[1].value
+        : { success: false, error: results[1].reason };
+
+    const telegramOk = telegramResult.success;
+    const baleOk = baleResult.success;
+
+    /**
+     * At least one must succeed
+     */
+    if (!telegramOk && !baleOk) {
       console.error({
-        telegram: tg.data,
-        bale: bale.data,
+        telegram: telegramResult,
+        bale: baleResult,
       });
 
       return NextResponse.json(
         {
           success: false,
-          error: "One or more messaging providers failed",
-          providers: {
-            telegram: tg.ok,
-            bale: bale.ok,
-          },
+          error: "All messaging providers failed",
         },
         { status: 500 },
       );
@@ -158,6 +179,10 @@ export async function POST(req: Request) {
     return NextResponse.json({
       success: true,
       sessionId,
+      delivered: {
+        telegram: telegramOk,
+        bale: baleOk,
+      },
     });
   } catch (err) {
     console.error(err);

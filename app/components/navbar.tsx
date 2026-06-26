@@ -3,17 +3,11 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ShoppingCart, Sun, Moon, Monitor } from "lucide-react";
 
 import { useTheme } from "next-themes";
 import { useCartStore } from "../store/cart-store";
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/app/components/ui/dropdown-menu";
+
 
 import { Button } from "@/app/components/ui/button";
 import ThemeToggle from "./theme/theme-toggle";

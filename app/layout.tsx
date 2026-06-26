@@ -12,6 +12,8 @@ import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { Providers } from "./providers";
 import { GlobalLoadingOverlay } from "./components/global-loading-overlay";
+import AnnouncementBanner from "./components/notifBar/notif-bar";
+import { FaWhatsapp } from "react-icons/fa";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -53,6 +55,12 @@ export const metadata: Metadata = {
       "max-image-preview": "large",
       "max-snippet": -1,
     },
+  },
+
+  icons: {
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
   },
 
   openGraph: {
@@ -201,12 +209,18 @@ export default function RootLayout({
           `}
         </Script>
         <Providers>
-          {" "}
+          <AnnouncementBanner background="linear-gradient(90deg, #34d399, #059669)">
+            <div className="flex items-center gap-2 text-white font-medium">
+              <FaWhatsapp className="text-green-300 text-lg" />
+
+              <p className="">برای ثبت سفارش تماس بگیرید: ۰۹۹۶۲۲۵۴۰۳۴</p>
+            </div>
+          </AnnouncementBanner>
           <Navbar />
           <MobileBottomNav />
           <main>{children}</main>
           <Footer />
-          <WhatsappButton />
+          {/* <WhatsappButton /> */}
           <Toaster richColors position="top-left" />
           <GlobalLoadingOverlay />
         </Providers>

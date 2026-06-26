@@ -1,25 +1,26 @@
 "use client";
 
+import { useMemo, Suspense } from "react";
 import Skeleton from "react-loading-skeleton";
+
 import { uiProducts } from "@/app/data/products.ui";
 import ProductCardHome from "@/app/components/product-card-home";
-import { useTransition } from "react";
 
 function DealsRailSkeleton() {
   return (
     <div className="space-y-4">
-      <Skeleton height={22} width={180} />
+      <Skeleton height={20} width={180} />
 
-      <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
         {Array.from({ length: 8 }).map((_, i) => (
           <div
             key={i}
-            className="border border-border rounded-xl p-3 space-y-3"
+            className="rounded-xl border border-border p-2 space-y-2"
           >
-            <Skeleton height={120} borderRadius={12} />
-            <Skeleton height={14} width="80%" />
-            <Skeleton height={12} width="60%" />
-            <Skeleton height={18} width="40%" />
+            <Skeleton height={120} className="rounded-lg" />
+            <Skeleton height={14} width="85%" />
+            <Skeleton height={12} width="65%" />
+            <Skeleton height={16} width="45%" />
           </div>
         ))}
       </div>
@@ -27,26 +28,45 @@ function DealsRailSkeleton() {
   );
 }
 
-export default function DealsRail({ title }: { title: string }) {
-  const [isPending] = useTransition();
+function DealsRailContent({ title }: { title: string }) {
+  const products = useMemo(() => {
+    return uiProducts
+      .filter((p) => (p.discountPercent ?? 0) > 0)
+      .sort((a, b) => (b.discountPercent ?? 0) - (a.discountPercent ?? 0))
+      .slice(0, 8);
+  }, [uiProducts]);
 
-  const products = uiProducts.filter((p) => p.discountPercent > 0).slice(0, 8);
-
-  if (isPending) {
-    return <DealsRailSkeleton />;
+  if (products.length === 0) {
+    return (
+      <div className="text-sm text-muted-foreground py-6">
+        فعلاً پیشنهاد ویژه‌ای موجود نیست
+      </div>
+    );
   }
 
   return (
-    <div className="space-y-4">
-      <h2 className="text-lg font-semibold">{title}</h2>
+    <section className="space-y-4">
+      {/* HEADER */}
+      <div className="flex items-center justify-between">
+        <h2 className="text-lg font-semibold tracking-tight">{title}</h2>
 
-      <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">
+        <div className="text-xs text-muted-foreground">تخفیف‌دارها</div>
+      </div>
+
+      {/* GRID */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
         {products.map((product) => (
-          <div key={product.id} className="w-full">
-            <ProductCardHome product={product as any} />
-          </div>
+          <ProductCardHome key={product.id} product={product as any} />
         ))}
       </div>
-    </div>
+    </section>
+  );
+}
+
+export default function DealsRail({ title }: { title: string }) {
+  return (
+    <Suspense fallback={<DealsRailSkeleton />}>
+      <DealsRailContent title={title} />
+    </Suspense>
   );
 }

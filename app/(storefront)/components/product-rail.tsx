@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Truck } from "lucide-react";
 
-import { useCartStore } from "@/store/cart-store";
+import { useCartStore } from "@/app/store/cart-store";
 import { formatPrice } from "@/lib/format";
 
 import { Card, CardContent } from "@/app/components/ui/card";

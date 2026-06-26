@@ -11,6 +11,7 @@ import { Product, ProductVariant } from "@/lib/types";
 import { ImageLightbox } from "./ImageLightbox";
 import { useCartStore } from "@/app/store/cart-store";
 import { formatPrice } from "@/lib/format";
+import { getPricing } from "@/lib/pricing";
 
 import {
   Heart,
@@ -22,7 +23,7 @@ import {
   MapPin,
 } from "lucide-react";
 
-import { useUIStore } from "@/store/ui-store";
+import { useUIStore } from "@/app/store/ui-store";
 
 export default function ProductClient({ product }: { product: Product }) {
   const addItem = useCartStore((s) => s.addItem);
@@ -89,6 +90,15 @@ export default function ProductClient({ product }: { product: Product }) {
   useEffect(() => {
     setActiveIndex(0);
   }, [activeVariant, product.id]);
+
+  //  ================= LAYER SYNC ================= */
+  const pricingInput = {
+    price: activeVariant?.price ?? product.price,
+    originalPrice: activeVariant?.originalPrice ?? product.originalPrice,
+    discountPercent: product.discountPercent,
+  };
+
+  const { finalPrice } = getPricing(pricingInput);
 
   return (
     <div className="bg-background pb-[160px] lg:pb-0">
@@ -164,7 +174,7 @@ export default function ProductClient({ product }: { product: Product }) {
           <Separator />
 
           <div className="text-2xl font-bold text-primary">
-            {formatPrice(price)}
+            {formatPrice(finalPrice)}
           </div>
 
           {isVariantMode && (
@@ -199,7 +209,7 @@ export default function ProductClient({ product }: { product: Product }) {
         <div className="hidden lg:block lg:sticky lg:top-24">
           <Card>
             <CardContent className="p-4 space-y-4">
-              <div className="font-bold text-lg">{formatPrice(price)}</div>
+              <div className="font-bold text-lg">{formatPrice(finalPrice)}</div>
 
               {qty === 0 ? (
                 <Button

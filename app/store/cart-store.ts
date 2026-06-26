@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { CartItem, Product } from "../../lib/types";
+import { CartItem, Product } from "@/lib/types";
 
 type AddItemInput = {
   product: Product | null | undefined;

@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { toast } from "sonner";
 
 type Errors = {
   name?: string;
@@ -71,11 +72,14 @@ export default function ContactPage() {
     setErrors(clientErrors);
 
     if (Object.keys(clientErrors).length > 0) {
+      toast.error("لطفاً فرم را کامل و صحیح پر کنید");
       return;
     }
 
     setLoading(true);
     setError(null);
+
+    const loadingToast = toast.loading("در حال ارسال پیام...");
 
     try {
       const res = await fetch("/api/telegram/contact", {
@@ -90,8 +94,16 @@ export default function ContactPage() {
 
       setValues({ name: "", phone: "", email: "", message: "" });
       setSent(true);
+
+      toast.success("پیام با موفقیت ارسال شد", {
+        id: loadingToast,
+      });
     } catch (err: any) {
       setError(err.message || "خطا در ارسال پیام");
+
+      toast.error("ارسال پیام ناموفق بود", {
+        id: loadingToast,
+      });
     } finally {
       setLoading(false);
     }
@@ -181,7 +193,7 @@ export default function ContactPage() {
                   setValues({ ...values, message: e.target.value })
                 }
                 placeholder="پیام شما"
-                className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm min-h-[140px] outline-none focus:ring-2 focus:ring-primary/30"
+                className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm min-h-35 outline-none focus:ring-2 focus:ring-primary/30"
               />
               {errors.message && (
                 <p className="text-xs text-destructive mt-1">

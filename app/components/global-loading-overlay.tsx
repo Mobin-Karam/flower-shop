@@ -1,6 +1,6 @@
 "use client";
 
-import { useGlobalLoading } from "@/store/loading-store";
+import { useGlobalLoading } from "@/app/store/loading-store";
 
 export function GlobalLoadingOverlay() {
   const isLoading = useGlobalLoading((s) => s.isLoading);

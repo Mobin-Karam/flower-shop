@@ -98,7 +98,7 @@ export default function Footer() {
         <div className="border-t border-border" />
 
         {/* ================= MAIN GRID ================= */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-10">
           {/* QUICK LINKS */}
           <div className="space-y-4">
             <h4 className="text-sm font-semibold">دسترسی سریع</h4>
@@ -139,12 +139,43 @@ export default function Footer() {
 
             <p className="text-sm text-muted-foreground leading-relaxed">
               گلیفای با تمرکز بر محصولات طبیعی، تجربه‌ای امن و ساده برای خرید
-             آنلاین محصولات ارگانیک و صنایع دستی غرب کشور.
+              آنلاین محصولات ارگانیک و صنایع دستی غرب کشور.
             </p>
           </div>
 
           <div className="space-y-4 justify-center flex">
             <EnamadBadge />
+          </div>
+
+          {/* CONTACT */}
+          <div className="space-y-4">
+            <h4 className="text-sm font-semibold">تماس با ما</h4>
+
+            <div className="text-sm text-muted-foreground space-y-2">
+              <p>
+                تلفن:{" "}
+                <Link
+                  href="tel:+989962254034"
+                  className="text-primary hover:underline"
+                >
+                  ۴۰۳۴−۲۲۵−۰۹۹۶
+                </Link>
+              </p>
+
+              <p>
+                واتساپ:{" "}
+                <Link
+                  href="https://wa.me/989962254034"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:underline"
+                >
+                  ارسال پیام
+                </Link>
+              </p>
+
+              <p>پاسخگویی: ۹:۰۰ تا ۱۸:۰۰</p>
+            </div>
           </div>
         </div>
 

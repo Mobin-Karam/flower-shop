@@ -97,7 +97,7 @@ export const products: Product[] = [
 
     weight: 0.025,
 
-    discountPercent: 8,
+    discountPercent: 15,
     taxIncluded: true,
 
     seoTitle: "غنچه گل محمدی امسالی",
@@ -155,7 +155,7 @@ export const products: Product[] = [
 
     weight: 0.8,
 
-    discountPercent: 14,
+    discountPercent: 10,
     taxIncluded: true,
 
     seoTitle: "کلاش اورامان دست‌دوز",

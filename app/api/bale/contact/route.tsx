@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import { contactSchema } from "../../../lib/schema";
-import { createSessionId } from "../../../lib/bale/context";
+import { contactSchema } from "../../../../lib/schema";
+import { createSessionId } from "../../../../lib/bale/context";
 
 const TOKEN = process.env.BALE_BOT_TOKEN!;
-const CHANNEL = process.env.BALE_SELL_CHANNEL!;
+const CHANNEL = process.env.BALE_CONTACT_CHANNEL!;
 
 export async function POST(req: Request) {
   try {

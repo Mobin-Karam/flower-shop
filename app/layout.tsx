@@ -16,74 +16,50 @@ import { GlobalLoadingOverlay } from "./components/global-loading-overlay";
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://flower-shop-ochre-psi.vercel.app/"),
+  metadataBase: new URL("https://gulify.ir"),
 
   title: {
-    default: "Gulify | خرید گل محمدی خشک، دمنوش گل رز، محصولات طبیعی ایران",
+    default: "Gulify | سوغات کردستان و غرب ایران",
     template: "%s | Gulify",
   },
 
   description:
-    "خرید گل محمدی خشک و دمنوش گیاهی طبیعی در ایران. ارسال سریع به سراسر کشور از جمله کرمانشاه، کردستان، پاوه، نودشه، نوسود، اورامان، مریوان، سنندج، کامیاران، جوانرود، روانسر و مناطق کردنشین غرب ایران.",
+    "خرید سوغات اصیل کردستان و غرب ایران شامل گل محمدی، دمنوش‌های گیاهی، صنایع دستی و محصولات طبیعی هورامان. ارسال به سراسر ایران.",
 
   keywords: [
-    "گل محمدی خشک",
-    "دمنوش گل رز",
-    "خرید گل خشک",
-    "دمنوش گیاهی ایران",
-    "گل برای چای",
-    "Gulify",
-
-    // 🟢 Kermanshah SEO
-    "کرمانشاه",
-    "کرماشان",
-    "جوانرود",
-    "پاوه",
-    "نودشه",
-    "نوسود",
-    "روانسر",
-    "سرپل ذهاب",
-    "اسلام آباد غرب",
-    "کنگاور",
-    "صحنه",
-    "هرسین",
-    "بیستون",
-
-    // 🟢 Kurdistan SEO
-    "کردستان",
-    "سنندج",
-    "مریوان",
-    "کامیاران",
-    "بانه",
-    "سقز",
-    "دیواندره",
-    "قروه",
-    "بیجار",
-    "اورامان",
+    "سوغات کردستان",
+    "سوغات غرب ایران",
     "هورامان",
-    "اورامانات",
-
-    // 🟢 Hawraman region SEO
-    "هورامان تخت",
-    "اورامان تخت",
-    "حجیج",
-    "پالنگان",
-    "شامشیر",
-    "شاخو",
-
-    // 🟢 Intent keywords
-    "خرید اینترنتی گل خشک",
-    "دمنوش آرامش بخش",
-    "گل رز طبیعی",
+    "اورامان",
+    "مریوان",
+    "سنندج",
+    "پاوه",
+    "جوانرود",
+    "کامیاران",
+    "دمنوش گیاهی",
+    "گل محمدی",
+    "محصولات طبیعی کردستان",
+    "صنایع دستی کردستان",
   ],
 
   authors: [{ name: "Gulify" }],
 
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+
   openGraph: {
-    title: "Gulify | گل محمدی خشک و دمنوش طبیعی ایران (کرمانشاه و کردستان)",
+    title: "Gulify | سوغات کردستان و هورامان",
     description:
-      "ارسال گل محمدی خشک به تمام شهرهای ایران از جمله کرمانشاه، کردستان، مریوان، پاوه، سنندج و مناطق اورامان.",
-    url: "https://flower-shop-ochre-psi.vercel.app/",
+      "فروش آنلاین سوغات اصیل کردستان شامل دمنوش‌ها، گل محمدی و محصولات طبیعی هورامان.",
+    url: "https://gulify.ir",
     siteName: "Gulify",
     locale: "fa_IR",
     type: "website",
@@ -91,19 +67,48 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "Gulify | دمنوش گل طبیعی ایران",
-    description: "خرید گل محمدی خشک و دمنوش گیاهی با ارسال به سراسر ایران",
+    title: "سوغات کردستان | Gulify",
+    description: "خرید سوغات طبیعی و اصیل غرب ایران",
   },
+};
 
-  robots: {
-    index: true,
-    follow: true,
-  },
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      name: "Gulify",
+      url: "https://gulify.ir",
+      logo: "https://gulify.ir/logo/logo.png",
+      description: "فروشگاه سوغات کردستان و محصولات طبیعی غرب ایران",
+    },
 
+    {
+      "@type": "WebSite",
+      name: "Gulify",
+      url: "https://gulify.ir",
+      inLanguage: "fa-IR",
+    },
 
-  other: {
-    enamad: "64776736",
-  },
+    {
+      "@type": "Store",
+      name: "Gulify",
+      description:
+        "فروشگاه آنلاین سوغات کردستان شامل دمنوش، گل محمدی و محصولات هورامان",
+      areaServed: [
+        "Iran",
+        "Kurdistan",
+        "Kermanshah",
+        "Hawraman",
+        "Oraman",
+        "Marivan",
+        "Sanandaj",
+        "Paveh",
+        "Javanrud",
+        "Kamyaran",
+      ],
+    },
+  ],
 };
 
 export default function RootLayout({

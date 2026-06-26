@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { ArrowUp } from "lucide-react";
+import EnamadBadge from "./enamad-badge";
 
 const trustBadges = [
   { id: 1, label: "پرداخت امن", icon: "/footer/footer1.svg" },
@@ -97,7 +98,7 @@ export default function Footer() {
         <div className="border-t border-border" />
 
         {/* ================= MAIN GRID ================= */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* QUICK LINKS */}
           <div className="space-y-4">
             <h4 className="text-sm font-semibold">دسترسی سریع</h4>
@@ -138,12 +139,17 @@ export default function Footer() {
 
             <p className="text-sm text-muted-foreground leading-relaxed">
               گلیفای با تمرکز بر محصولات طبیعی، تجربه‌ای امن و ساده برای خرید
-              آنلاین دمنوش‌ها و گیاهان دارویی فراهم می‌کند.
+             آنلاین محصولات ارگانیک و صنایع دستی غرب کشور.
             </p>
+          </div>
+
+          <div className="space-y-4 justify-center flex">
+            <EnamadBadge />
           </div>
         </div>
 
         {/* DIVIDER */}
+
         <div className="border-t border-border" />
 
         {/* ================= BOTTOM BAR ================= */}

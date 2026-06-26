@@ -1,28 +1,37 @@
-# 🌹 Flower Shop — Damask Rose Store
+# 🌿 Gulify — Western Iran Souvenir Store
 
-A modern, elegant e-commerce web application for selling Damask Rose products. Built with Next.js and designed to deliver a smooth, premium shopping experience.
+A modern, high-performance e-commerce platform showcasing authentic souvenirs and natural products from **Kurdistan, Kermanshah, and Hawraman region (Western Iran)**.
+
+| Desktop Main Page | Mobile Main Page |
+|--------------|--------------|
+| ![img1](./public/readme/readme1.png) | ![img2](./public/readme/readme2.png) |
 
 ---
 
-## ✨ About
+## ✨ Overview
 
-This project is a minimal and modern online flower shop focused on **Damask Rose (Rosa damascena)** — known for its rich fragrance and wide use in perfumes, skincare, and natural products.
+Gulify is a culturally inspired online store focused on selling **traditional and natural products of Western Iran**, including:
 
-The goal is to create a fast, beautiful, and user-friendly shopping experience.
+- 🌹 Damask Rose (Gol Mohammadi)
+- 🌿 Herbal teas and natural infusions
+- 👡 Handmade Kalash (Hawraman traditional footwear)
+- 🎁 Regional souvenirs from Kurdistan & Hawraman
+
+The goal is to combine **local culture + modern web technology** into a scalable e-commerce experience.
 
 ---
 
 ## 🚀 Features
 
-- 🌹 Damask Rose product showcase
-- ⚡ Fast and optimized Next.js app
-- 🎨 Smooth animations with Framer Motion
-- 🛒 E-commerce ready structure
-- 🔔 Toast notifications using Sonner
-- 🧠 State management with Zustand
-- 🧩 Form validation using Zod
-- 💨 Modern UI with Tailwind CSS
-- 📱 Fully responsive design
+- 🛍️ Product-based architecture (scalable catalog system)
+- ⚡ Next.js 16 App Router architecture
+- 🎨 Modern UI with Tailwind CSS 4
+- 🧠 Global state management with Zustand
+- 📦 Variant-based product system (size, SKU, stock)
+- 🔔 Notifications via Sonner
+- 🎞️ Smooth animations with Framer Motion
+- 📱 Fully responsive (mobile-first design)
+- 🔍 SEO-optimized structure (metadata + keywords + schema-ready)
 
 ---
 
@@ -30,21 +39,37 @@ The goal is to create a fast, beautiful, and user-friendly shopping experience.
 
 - Next.js 16
 - React 19
+- TypeScript
 - Tailwind CSS 4
 - Framer Motion
 - Zustand
 - Zod
 - Lucide React
+- Embla Carousel
 - Sonner
-- clsx
-- tailwind-merge
+- clsx + tailwind-merge
+
+---
+
+## 🧱 Product System
+
+Each product supports:
+
+- SEO fields (`seoTitle`, `seoDescription`)
+- Variant system (size/stock/SKU)
+- Inventory tracking
+- Category & subcategory structure
+- Image gallery support
+- Pricing & discount logic
+- Feature flags (bestseller, featured, new)
 
 ---
 
 ## 📦 Installation
 
 ```bash
-
 git clone https://github.com/Mobin-Karam/flower-shop.git
 cd flower-shop
 npm install
+npm run dev
+```

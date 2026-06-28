@@ -2,18 +2,20 @@ import { NextResponse } from "next/server";
 import { contactSchema } from "../../../../lib/schema";
 import { createSessionId } from "../../../../lib/bale/context";
 
+
+
 const TELEGRAM_TOKEN = process.env.TELEGRAM_BOT_TOKEN!;
 const TELEGRAM_CHANNEL = process.env.TELEGRAM_CONTACT_CHANNEL!;
 
 const BALE_TOKEN = process.env.BALE_BOT_TOKEN!;
 const BALE_CHANNEL = process.env.BALE_CONTACT_CHANNEL!;
 
+/* ================= BUILD MESSAGE ================= */
 function buildCaption(data: any, sessionId: string) {
   const { name, phone, email, message } = data;
 
   return `
 📩 پیام جدید از فرم تماس
-
 🆔 ${sessionId}
 
 👤 نام: ${name}
@@ -22,9 +24,10 @@ function buildCaption(data: any, sessionId: string) {
 
 📝 پیام:
 ${message}
-`.trim();
+  `.trim();
 }
 
+/* ================= TELEGRAM ================= */
 async function sendTelegram(text: string) {
   try {
     const res = await fetch(
@@ -42,17 +45,15 @@ async function sendTelegram(text: string) {
     const data = await res.json();
 
     return {
-      ok: res.ok && data?.ok,
+      success: res.ok && data?.ok,
       data,
     };
-  } catch (err) {
-    return {
-      ok: false,
-      error: err,
-    };
+  } catch (error) {
+    return { success: false, error };
   }
 }
 
+/* ================= BALE ================= */
 async function sendBale(text: string) {
   try {
     const res = await fetch(
@@ -70,21 +71,18 @@ async function sendBale(text: string) {
     const data = await res.json();
 
     return {
-      ok: res.ok && data?.ok,
+      success: res.ok && data?.ok,
       data,
     };
-  } catch (err) {
-    return {
-      ok: false,
-      error: err,
-    };
+  } catch (error) {
+    return { success: false, error };
   }
 }
 
+/* ================= API ================= */
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-
     const parsed = contactSchema.safeParse(body);
 
     if (!parsed.success) {
@@ -97,34 +95,24 @@ export async function POST(req: Request) {
     const sessionId = createSessionId();
     const caption = buildCaption(parsed.data, sessionId);
 
-    /**
-     * IMPORTANT: non-blocking multi-provider execution
-     */
     const results = await Promise.allSettled([
       sendTelegram(caption),
       sendBale(caption),
     ]);
 
     const telegram =
-      results[0].status === "fulfilled"
-        ? results[0].value
-        : { ok: false, error: results[0].reason };
+      results[0].status === "fulfilled" ? results[0].value : { success: false };
 
     const bale =
-      results[1].status === "fulfilled"
-        ? results[1].value
-        : { ok: false, error: results[1].reason };
+      results[1].status === "fulfilled" ? results[1].value : { success: false };
 
-    /**
-     * At least one must succeed
-     */
-    if (!telegram.ok && !bale.ok) {
+    if (!telegram.success && !bale.success) {
       console.error({ telegram, bale });
 
       return NextResponse.json(
         {
           success: false,
-          error: "Both messaging providers failed",
+          error: "All providers failed",
         },
         { status: 500 },
       );
@@ -134,8 +122,8 @@ export async function POST(req: Request) {
       success: true,
       sessionId,
       delivered: {
-        telegram: telegram.ok,
-        bale: bale.ok,
+        telegram: telegram.success,
+        bale: bale.success,
       },
     });
   } catch (error) {

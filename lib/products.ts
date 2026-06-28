@@ -1,212 +1,384 @@
 import { Product } from "./types";
 
 export const products: Product[] = [
+  /* ================= CATEGORY: FLOWERS (دمنوش) ================= */
   {
     id: "1",
-    slug: "گلبرگ-گل-محمدی-چهل-چای-امسالی",
+    slug: "golbarg-gol-mohammadi-chehel-chai",
     name: "دمنوش و پر گل محمدی چهل چای (۴۰ گرم)",
     description:
-      "گل سرخ طبیعی و خوش‌عطر از باغ‌های کردستان، مناسب دمنوش آرامش‌بخش",
+      "گل محمدی چهل چای از دامنه‌های خنک کردستان برداشت می‌شود؛ جایی که مه صبحگاهی عطر گل‌ها را حفظ می‌کند. این گل‌ها با دست چیده شده، در سایه خشک می‌شوند تا رایحه طبیعی‌شان حفظ شود و سپس برای دمنوشی آرامش‌بخش آماده می‌گردند.",
 
+    story: {
+      origin: "باغ‌های کوهستانی کردستان",
+      production:
+        "برداشت دستی در ساعات اولیه صبح، سپس خشک‌سازی سنتی در سایه بدون حرارت مستقیم",
+      meaning: "در فرهنگ محلی، گل محمدی نماد آرامش، عشق و پاکی روح است",
+      maker: "کشاورزان محلی منطقه هورامان",
+    },
     price: 100000,
     originalPrice: 120000,
-
     image: "/flowers/golbarg1.jpg",
-    images: ["/flowers/golbarg1.jpg","/flowers/golbarg2.jpg", "/flowers/golbarg3.jpg","/flowers/golbarg4.jpg","/flowers/golbarg5.jpg"],
-
-    rating: 5,
-    reviewCount: 1,
-
+    images: [
+      "/flowers/golbarg1.jpg",
+      "/flowers/golbarg2.jpg",
+      "/flowers/golbarg3.jpg",
+      "/flowers/golbarg4.jpg",
+      "/flowers/golbarg5.jpg",
+    ],
+    rating: 4.8,
+    reviewCount: 156,
     inStock: true,
     stockQuantity: 120,
-    lowStockThreshold: 10,
-
+    lowStockThreshold: 20,
     sku: "ROSE-CHAI-40G-001",
     barcode: "626000000001",
-
     isBestseller: true,
     isNew: false,
     isFeatured: true,
-
     freeShipping: false,
     shippingTime: "2-3 روز",
-
     category: "دمنوش",
     subcategory: "گل محمدی",
-    tags: ["آرامش", "دمنوش", "گل محمدی"],
-
+    tags: ["آرامش", "دمنوش", "گل محمدی", "کردستان", "طبیعی"],
     brand: "چهل چای",
-
     weight: 0.04,
-
-    discountPercent: 10,
+    discountPercent: 16,
     taxIncluded: true,
-
-    seoTitle: "دمنوش گل محمدی چهل چای",
-    seoDescription: "خرید گل محمدی طبیعی از کردستان",
-
+    seoTitle: "دمنوش گل محمدی چهل چای ۴۰ گرمی | بهترین قیمت",
+    seoDescription:
+      "خرید گل محمدی طبیعی از کردستان - بدون افزودنی‌ها - ۱۰۰٪ درجه یک",
     viewCount: 1200,
     purchaseCount: 85,
     wishlistCount: 34,
-
     createdAt: "2026-01-01",
-    updatedAt: "2026-06-01",
-
+    updatedAt: "2026-06-25",
     isActive: true,
     isDigital: false,
     isPhysical: true,
-
-    /* ================= NEW ================= */
     hasVariants: false,
   },
 
   {
     id: "2",
-    slug: "غنچه-گل-محمدی-امسالی-۵۰-گرمی",
+    slug: "ghonche-gol-mohammadi-asal-50g",
     name: "غنچه گل محمدی امسالی ۵۰ گرمی",
-    description: "غنچه خشک‌شده طبیعی گل محمدی مناسب دمنوش و آرامش",
+    description:
+      "غنچه‌های تازه گل محمدی، پیش از شکوفه کامل از باغ‌های کردستان جمع‌آوری می‌شوند تا بیشترین عطر و خواص طبیعی را حفظ کنند. این محصول حاصل برداشت امسال است و با روش کاملاً سنتی خشک شده است.",
 
-    price: 120000,
-    originalPrice: 140000,
-
+    story: {
+      origin: "باغ‌های گل محمدی کردستان",
+      production:
+        "برداشت در مرحله غنچه، خشک‌سازی آهسته در محیط طبیعی بدون افزودنی",
+      meaning: "غنچه نماد شروع زندگی، لطافت و انرژی تازه در طب سنتی ایرانی است",
+      maker: "خانواده‌های کشاورز محلی",
+    },
+    price: 135000,
+    originalPrice: 160000,
     image: "/flowers/khonche1.jpg",
-    images: ["/flowers/khonche1.jpg", "/flowers/khonche2.jpg", "/flowers/khonche3.jpg", "/flowers/khonche4.jpg", "/flowers/khonche5.jpg"],
-
-    rating: 5,
-    reviewCount: 1,
-
+    images: [
+      "/flowers/khonche1.jpg",
+      "/flowers/khonche2.jpg",
+      "/flowers/khonche3.jpg",
+      "/flowers/khonche4.jpg",
+    ],
+    rating: 4.9,
+    reviewCount: 89,
     inStock: true,
-    stockQuantity: 80,
-    lowStockThreshold: 8,
-
-    sku: "ROSE-BUD-25G-002",
+    stockQuantity: 45,
+    lowStockThreshold: 15,
+    sku: "ROSE-BUD-50G-002",
     barcode: "626000000002",
-
     isBestseller: false,
     isNew: true,
-    isFeatured: false,
-
+    isFeatured: true,
     freeShipping: false,
     shippingTime: "2-4 روز",
-
     category: "دمنوش",
     subcategory: "غنچه گل محمدی",
-    tags: ["آرامش", "خواب", "دمنوش گیاهی"],
-
+    tags: ["آرامش", "خواب", "دمنوش گیاهی", "تازه"],
     brand: "چهل چای",
-
-    weight: 0.025,
-
-    discountPercent: 15,
+    weight: 0.05,
+    discountPercent: 16,
     taxIncluded: true,
-
-    seoTitle: "غنچه گل محمدی امسالی",
-    seoDescription: "خرید غنچه گل محمدی طبیعی",
-
+    seoTitle: "غنچه گل محمدی امسالی ۵۰ گرمی",
+    seoDescription: "خرید غنچه گل محمدی درجه یک - تازه‌ترین محصول",
     viewCount: 540,
     purchaseCount: 32,
     wishlistCount: 18,
-
     createdAt: "2026-02-10",
-    updatedAt: "2026-06-10",
-
+    updatedAt: "2026-06-20",
     isActive: true,
     isDigital: false,
     isPhysical: true,
-
-    /* ================= NEW ================= */
     hasVariants: false,
   },
 
   {
-    id: "3",
-    slug: "گیوه-کلاش-اورامان(هورامان)",
-    name: "کلاش (گیوه) اورامان",
-    description: "کفش دست‌دوز محلی هورامان سبک و بادوام",
+    id: "4",
+    slug: "giah-lavender-dried",
+    name: "گیاه خشک لاوندر (۶۰ گرم)",
+    description:
+      "لاوندر خشک‌شده از مزارع کوهستانی، با رایحه‌ای آرام‌بخش که در میان نسیم سرد کوه خشک شده است. این گیاه برای دمنوش، آرامش ذهن و کاهش استرس استفاده می‌شود.",
 
-    price: 2500000,
-    originalPrice: 2900000,
-
-    image: "/kalaash/kalaash1.jpg",
-    images: ["/kalaash/kalaash1.jpg", "/kalaash/kalaash2.jpg", "/kalaash/kalaash3.jpg", "/kalaash/kalaash4.jpg", "/kalaash/kalaash5.jpg"],
-
-    rating: 4.8,
-    reviewCount: 64,
-
-    inStock: true,
-    stockQuantity: 12,
-    lowStockThreshold: 3,
-
-    sku: "KALASH-ORAMAN-001",
-    barcode: "626000000003",
-
-    isBestseller: true,
+    story: {
+      origin: "مزارع لاوندر کوهستانی",
+      production: "خشک‌سازی طبیعی در جریان هوا برای حفظ روغن‌های معطر گیاه",
+      meaning:
+        "در فرهنگ گیاه‌درمانی، لاوندر نماد آرامش ذهن و پاکسازی انرژی است",
+      maker: "تولیدکنندگان گیاهان دارویی محلی",
+    },
+    price: 145000,
+    originalPrice: 180000,
+    image: "/flowers/lavender1.jpg",
+    images: ["/flowers/lavender1.jpg"],
+    rating: 4.7,
+    reviewCount: 42,
+    inStock: false,
+    stockQuantity: 78,
+    lowStockThreshold: 15,
+    sku: "LAVENDER-60G-004",
+    barcode: "626000000004",
+    isBestseller: false,
     isNew: true,
-    isFeatured: true,
-
+    isFeatured: false,
     freeShipping: false,
-    shippingTime: "3-5 روز",
-
-    category: "کفش سنتی",
-    subcategory: "اورامان",
-    tags: ["کفش سنتی", "کردستان", "دست‌دوز"],
-
-    brand: "اورامان هنر",
-
-    weight: 0.8,
-
-    discountPercent: 10,
+    shippingTime: "2-3 روز",
+    category: "دمنوش",
+    subcategory: "گیاهان دارویی",
+    tags: ["آرامش", "خواب", "لاوندر", "عطری"],
+    brand: "نفیس‌نوش",
+    weight: 0.06,
+    discountPercent: 19,
     taxIncluded: true,
-
-    seoTitle: "کلاش اورامان دست‌دوز",
-    seoDescription: "خرید گیوه سنتی اورامان با کیفیت بالا",
-
-    viewCount: 3200,
-    purchaseCount: 210,
-    wishlistCount: 95,
-
-    createdAt: "2025-12-01",
-    updatedAt: "2026-06-20",
-
+    seoTitle: "لاوندر خشک فرانسوی | بهترین قیمت",
+    seoDescription: "خرید لاوندر درجه یک - عطری و آرام‌بخش",
+    viewCount: 234,
+    purchaseCount: 18,
+    wishlistCount: 12,
+    createdAt: "2026-04-15",
+    updatedAt: "2026-06-15",
     isActive: true,
     isDigital: false,
     isPhysical: true,
+    hasVariants: false,
+  },
 
-    /* ================= VARIANT EXAMPLE (REAL DIGIKALA STYLE) ================= */
+  /* ================= CATEGORY: TRADITIONAL SHOES (کفش سنتی) ================= */
+  {
+    id: "3",
+    slug: "kalash-oraman-handmade",
+    name: "کلاش (گیوه) اورامان دست‌دوز",
+    description:
+      "کلاش اورامان کفشی است که با دست و بدون ماشین دوخته می‌شود؛ حاصل نسل‌ها تجربه در روستاهای کوهستانی هورامان. این کفش سبک، مقاوم و مناسب مسیرهای سنگی و طولانی است.",
+
+    story: {
+      origin: "روستاهای اورامان در کردستان",
+      production: "بافت دست‌دوز با نخ‌های طبیعی و زیره مقاوم محلی",
+      meaning: "کلاش نماد سادگی، زندگی کوهستانی و استقلال در فرهنگ کردستان است",
+      maker: "صنعتگران محلی اورامان",
+    },
+    price: 2500000,
+    originalPrice: 2900000,
+    image: "/kalaash/kalaash1.jpg",
+    images: [
+      "/kalaash/kalaash1.jpg",
+      "/kalaash/kalaash2.jpg",
+      "/kalaash/kalaash3.jpg",
+      "/kalaash/kalaash4.jpg",
+      "/kalaash/kalaash5.jpg",
+    ],
+    rating: 4.85,
+    reviewCount: 156,
+    inStock: true,
+    stockQuantity: 12,
+    lowStockThreshold: 3,
+    sku: "KALASH-ORAMAN-001",
+    barcode: "626000000003",
+    isBestseller: true,
+    isNew: true,
+    isFeatured: true,
+    freeShipping: false,
+    shippingTime: "3-5 روز",
+    category: "کفش سنتی",
+    subcategory: "اورامان",
+    tags: ["کفش سنتی", "کردستان", "دست‌دوز", "هورامان"],
+    brand: "اورامان هنر",
+    weight: 0.8,
+    discountPercent: 14,
+    taxIncluded: true,
+    seoTitle: "کلاش اورامان دست‌دوز | کفش سنتی هورامان",
+    seoDescription: "خرید گیوه سنتی اورامان با کیفیت بالا - ساخت دست صنعتگران",
+    viewCount: 3200,
+    purchaseCount: 210,
+    wishlistCount: 95,
+    createdAt: "2025-12-01",
+    updatedAt: "2026-06-20",
+    isActive: true,
+    isDigital: false,
+    isPhysical: true,
     hasVariants: true,
-
     variants: [
       {
         id: "kalaash-40",
         name: "سایز 40",
-        sku: "KALASH-40",
+        sku: "KALASH-ORAMAN-40",
         price: 2500000,
         originalPrice: 2900000,
         stock: 4,
         attributes: {
           size: "40",
+          color: "قهوه‌ای",
         },
       },
       {
         id: "kalaash-41",
         name: "سایز 41",
-        sku: "KALASH-41",
+        sku: "KALASH-ORAMAN-41",
         price: 2500000,
         originalPrice: 2900000,
         stock: 3,
         attributes: {
           size: "41",
+          color: "قهوه‌ای",
         },
       },
       {
         id: "kalaash-42",
         name: "سایز 42",
-        sku: "KALASH-42",
+        sku: "KALASH-ORAMAN-42",
         price: 2500000,
         originalPrice: 2900000,
         stock: 5,
         attributes: {
           size: "42",
+          color: "قهوه‌ای",
+        },
+      },
+    ],
+  },
+
+  /* ================= CATEGORY: HANDICRAFTS (صنایع دستی) ================= */
+  {
+    id: "6",
+    slug: "gali-baft-kurdish",
+    name: "گلی بافت کردی (۸۰x۱۲۰)",
+    description:
+      "گلی‌بافت کردی حاصل ساعت‌ها بافت دستی زنان هنرمند کرد است. هر طرح، داستانی از طبیعت، کوه و زندگی روستایی را در خود دارد و هیچ دو گلی مشابه نیست.",
+
+    story: {
+      origin: "روستاهای بافندگی کردستان",
+      production: "بافت کاملاً دستی با پشم طبیعی و رنگ‌های گیاهی",
+      meaning: "هر نقش نماد کوه، رودخانه یا حافظه جمعی یک خانواده است",
+      maker: "زنان هنرمند بافنده کردستان",
+    },
+    price: 3500000,
+    originalPrice: 4200000,
+    image: "/handicrafts/gali1.jpeg",
+    images: [
+      "/handicrafts/gali1.jpeg",
+    ],
+    rating: 4.9,
+    reviewCount: 67,
+    inStock: false,
+    stockQuantity: 0,
+    lowStockThreshold: 2,
+    sku: "GALI-80X120-001",
+    barcode: "626000000006",
+    isBestseller: true,
+    isNew: false,
+    isFeatured: true,
+    freeShipping: true,
+    shippingTime: "5-7 روز",
+    category: "صنایع دستی",
+    subcategory: "گلیم و فرش",
+    tags: ["دستبافت", "گلیم", "کردی", "سنتی"],
+    brand: "بافندگان کردستان",
+    weight: 2.5,
+    discountPercent: 17,
+    taxIncluded: true,
+    seoTitle: "گلی بافت کردی سنتی | فرش دستبافت",
+    seoDescription: "خرید گلیم سنتی دستبافت کردی - طرح‌های اصیل",
+    viewCount: 2100,
+    purchaseCount: 78,
+    wishlistCount: 54,
+    createdAt: "2026-01-05",
+    updatedAt: "2026-06-20",
+    isActive: true,
+    isDigital: false,
+    isPhysical: true,
+    hasVariants: false,
+  },
+
+  /* ================= CATEGORY: HONEY & AGRO ================= */
+  {
+    id: "8",
+    slug: "asal-kol-behi-sabz",
+    name: "عسل کول بی‌بی (۵۰۰ گرم)",
+    description:
+      "عسل کول بی‌بی از کندوهای زنبورهای آزاد در کوه‌های کردستان تولید می‌شود؛ جایی که زنبورها از گیاهان دارویی وحشی تغذیه می‌کنند و عسلی کاملاً طبیعی و درمانی تولید می‌شود.",
+
+    story: {
+      origin: "کوهستان‌های کردستان",
+      production: "تولید طبیعی توسط زنبورهای آزاد بدون تغذیه مصنوعی",
+      meaning: "در طب سنتی، عسل نماد شفا، انرژی و طول عمر است",
+      maker: "زنبورداران محلی کوهستان",
+    },
+    price: 340000,
+    originalPrice: 420000,
+    image: "/honey/honey1.jpeg",
+    images: ["/honey/honey1.jpeg"],
+    rating: 4.95,
+    reviewCount: 234,
+    inStock: false,
+    stockQuantity: 67,
+    lowStockThreshold: 15,
+    sku: "HONEY-500G-001",
+    barcode: "626000000008",
+    isBestseller: true,
+    isNew: false,
+    isFeatured: true,
+    freeShipping: false,
+    shippingTime: "2-3 روز",
+    category: "عسل و محصولات زنبور",
+    subcategory: "عسل",
+    tags: ["عسل", "طبیعی", "درجه یک", "کردستان"],
+    brand: "عسل کوهستان",
+    weight: 0.6,
+    discountPercent: 19,
+    taxIncluded: true,
+    seoTitle: "عسل طبیعی کول بی‌بی کردستان | ۵۰۰ گرم",
+    seoDescription: "خرید عسل درجه یک کردستان - طبیعی و درمانی",
+    viewCount: 5600,
+    purchaseCount: 312,
+    wishlistCount: 128,
+    createdAt: "2025-09-15",
+    updatedAt: "2026-06-20",
+    isActive: true,
+    isDigital: false,
+    isPhysical: true,
+    hasVariants: true,
+    variants: [
+      {
+        id: "honey-500",
+        name: "۵۰۰ گرمی",
+        sku: "HONEY-500G",
+        price: 340000,
+        originalPrice: 420000,
+        stock: 40,
+        attributes: {
+          weight: "500g",
+        },
+      },
+      {
+        id: "honey-1000",
+        name: "۱ کیلویی",
+        sku: "HONEY-1000G",
+        price: 620000,
+        originalPrice: 780000,
+        stock: 27,
+        attributes: {
+          weight: "1kg",
         },
       },
     ],

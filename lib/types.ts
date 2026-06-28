@@ -1,32 +1,47 @@
+/* ================= STORY / ORIGIN ================= */
 
+export interface ProductStory {
+  origin?: string; // where it comes from (region / village)
+  history?: string; // cultural background
+  production?: string; // how it's made
+  meaning?: string; // symbolic / emotional meaning
+  harvestOrCraftTime?: string;
+  maker?: string; // artisan / community
+}
 
 export interface Product {
-  /* ================= CORE ================= */
   id: string;
   slug: string;
   name: string;
+
+  /**
+   * SHORT SUMMARY (for cards)
+   */
   description: string;
+
+  /**
+   * NEW: LONG-FORM BLOG STYLE STORY
+   */
+  story?: ProductStory;
+
+  /**
+   * NEW: optional full article-style text (for product page SEO/blog mode)
+   */
+  longDescription?: string;
 
   image: string;
   images?: string[];
 
-  /* ================= PRICING (BASE / FALLBACK) ================= */
+  /* ================= PRICING ================= */
   price: number;
   originalPrice?: number;
-
   discountPercent?: number;
-
   taxIncluded?: boolean;
 
-  /* ================= VARIANT SYSTEM (CRITICAL UPGRADE) ================= */
+  /* ================= VARIANTS ================= */
+  hasVariants?: boolean;
   variants?: ProductVariant[];
   defaultVariantId?: string;
-
-  /**
-   * If true → pricing MUST come from variant
-   * If false → single product pricing mode
-   */
-  hasVariants?: boolean;
 
   /* ================= INVENTORY ================= */
   inStock?: boolean;
@@ -40,7 +55,6 @@ export interface Product {
   category?: string;
   subcategory?: string;
   tags?: string[];
-
   brand?: string;
 
   /* ================= SHIPPING ================= */
@@ -55,10 +69,9 @@ export interface Product {
 
   badge?: ProductBadge;
 
-  /* ================= SOCIAL / METRICS ================= */
+  /* ================= SOCIAL ================= */
   rating?: number;
   reviewCount?: number;
-
   viewCount?: number;
   purchaseCount?: number;
   wishlistCount?: number;
@@ -77,34 +90,31 @@ export interface Product {
   isPhysical?: boolean;
 }
 
-/* ================= VARIANT MODEL (UPGRADED) ================= */
+/* ================= VARIANT MODEL ================= */
 export interface ProductVariant {
   id: string;
-  sku?: string;
-
   name: string;
 
-  /* pricing per SKU */
+  sku?: string;
+
+  /**
+   * variant-level pricing (your dataset already uses this)
+   */
   price?: number;
   originalPrice?: number;
 
-  /* inventory per SKU */
+  /**
+   * variant inventory (IMPORTANT FIX: your data uses "stock")
+   */
   stock?: number;
 
-  /* media per SKU */
   image?: string;
   images?: string[];
 
-  /* attribute system (CRITICAL FOR FILTERING LIKE DIGIKALA) */
-  attributes?: Record<string, string>;
   /**
-   * مثال:
-   * {
-   *   color: "red",
-   *   storage: "256GB",
-   *   sim: "esim"
-   * }
+   * flexible attribute system (size, weight, color, etc.)
    */
+  attributes?: Record<string, string>;
 }
 
 /* ================= BADGES ================= */
@@ -127,9 +137,10 @@ export type CartItem = {
   quantity: number;
   addedAt: number;
 
-  /* snapshot (DO NOT RELY ON PRODUCT LIVE DATA) */
+  /* snapshot (NEVER trust live product state) */
   unitPrice: number;
   originalPrice?: number;
+
   name: string;
   image: string;
   variantName?: string;

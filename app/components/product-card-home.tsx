@@ -6,6 +6,7 @@ import { Truck } from "lucide-react";
 
 import { formatPrice } from "../../lib/format";
 import { Product } from "@/lib/types";
+
 import { Card } from "@/app/components/ui/card";
 import { Badge } from "@/app/components/ui/badge";
 
@@ -16,16 +17,15 @@ type Props = {
 };
 
 export default function ProductCardHome({ product }: Props) {
-  const { finalPrice, originalPrice, discountPercent, hasDiscount } =
-    getPricing(product);
+  const { finalPrice, originalPrice, discountPercent } = getPricing(product);
 
   const inStock = product.inStock === true && (product.stockQuantity ?? 0) > 0;
 
-  const showOriginalPrice =
+  const showOldPrice =
     typeof originalPrice === "number" && originalPrice > finalPrice;
 
   return (
-    <Card className="w-full max-w-60 flex flex-col overflow-hidden">
+    <Card className="w-full flex flex-col overflow-hidden">
       {/* IMAGE */}
       <div className="relative w-full aspect-square">
         <Link href={`/shop/${product.slug}`}>
@@ -78,7 +78,7 @@ export default function ProductCardHome({ product }: Props) {
         <div className="flex items-center gap-2">
           <span className="font-bold text-sm">{formatPrice(finalPrice)}</span>
 
-          {showOriginalPrice && (
+          {showOldPrice && (
             <span className="text-xs line-through text-muted-foreground">
               {formatPrice(originalPrice!)}
             </span>

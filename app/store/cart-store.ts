@@ -12,7 +12,6 @@ type CartStore = {
   items: CartItem[];
 
   addItem: (input: AddItemInput) => void;
-
   removeItem: (key: string) => void;
   increase: (key: string) => void;
   decrease: (key: string) => void;
@@ -30,11 +29,11 @@ export const useCartStore = create<CartStore>()(
     (set, get) => ({
       items: [],
 
-      /* KEY */
+      /* ================= KEY ================= */
       getKey: (productId, variantId) =>
         variantId ? `${productId}:${variantId}` : productId,
 
-      /* ADD (HARDENED) */
+      /* ================= ADD ITEM ================= */
       addItem: ({ product, variantId, quantity = 1 }) => {
         if (!product) return;
 
@@ -61,13 +60,13 @@ export const useCartStore = create<CartStore>()(
           key,
           productId: product.id,
           product,
-
           variantId,
           quantity,
           addedAt: Date.now(),
 
           unitPrice,
           originalPrice,
+
           name: product.name,
           image: variant?.image ?? product.image,
           variantName: variant?.name,
@@ -76,9 +75,11 @@ export const useCartStore = create<CartStore>()(
         set({ items: [...items, newItem] });
       },
 
+      /* ================= REMOVE ================= */
       removeItem: (key) =>
         set({ items: get().items.filter((i) => i.key !== key) }),
 
+      /* ================= INCREASE ================= */
       increase: (key) =>
         set({
           items: get().items.map((i) =>
@@ -86,6 +87,7 @@ export const useCartStore = create<CartStore>()(
           ),
         }),
 
+      /* ================= DECREASE ================= */
       decrease: (key) =>
         set({
           items: get()
@@ -95,8 +97,10 @@ export const useCartStore = create<CartStore>()(
             .filter((i) => i.quantity > 0),
         }),
 
+      /* ================= CLEAR ================= */
       clearCart: () => set({ items: [] }),
 
+      /* ================= TOTALS ================= */
       getTotalItems: () => get().items.reduce((t, i) => t + i.quantity, 0),
 
       getTotalPrice: () =>

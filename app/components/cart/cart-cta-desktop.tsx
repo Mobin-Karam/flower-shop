@@ -129,7 +129,7 @@ export default function CartCTADesktop() {
               <div
                 key={item.id}
                 className="flex gap-3 border rounded-xl p-2 hover:bg-muted cursor-pointer"
-                onClick={() => router.push(`/product/${item.slug}`)}
+                onClick={() => router.push(`/shop/${item.slug}`)}
               >
                 <Image
                   src={item.image}

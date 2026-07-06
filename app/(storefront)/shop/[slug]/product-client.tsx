@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState } from "react";
 import { Product, ProductVariant } from "@/lib/types";
 import { useUIStore } from "@/app/store/ui-store";
 import { useCartStore } from "@/app/store/cart-store";
+import { useRecentlyViewed } from "@/lib/use-recently-viewed";
+import { analytics } from "@/lib/analytics";
 
 import ProductImageGallery from "./components/ProductImageGallery";
 import ProductInfo from "./components/ProductInfo";
@@ -12,13 +14,16 @@ import ProductMobileCTA from "./components/ProductMobileCTA";
 
 export default function ProductClient({ product }: { product: Product }) {
   const setActiveLayer = useUIStore((s) => s.setActiveLayer);
+  const { add: addRecentlyViewed } = useRecentlyViewed();
 
   const [liked, setLiked] = useState(false);
 
   useEffect(() => {
     setActiveLayer("product-cta");
+    addRecentlyViewed(product);
+    analytics.productView(product.slug);
     return () => setActiveLayer("nav");
-  }, [setActiveLayer]);
+  }, [setActiveLayer, product, addRecentlyViewed]);
 
   /* ================= VARIANT ================= */
   const defaultVariant = useMemo(() => {

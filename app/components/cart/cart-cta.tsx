@@ -26,13 +26,14 @@ export default function CartCTA() {
   const removeItem = useCartStore((s) => s.removeItem);
   const clearCart = useCartStore((s) => s.clearCart);
 
+  const activeLayer = useUIStore((s) => s.activeLayer);
   const setActiveLayer = useUIStore((s) => s.setActiveLayer);
 
   useEffect(() => {
     if (totalItems === 0) setActiveLayer("nav");
   }, [totalItems, setActiveLayer]);
 
-  if (totalItems === 0) return null;
+  if (totalItems === 0 || activeLayer === "product-cta") return null;
 
   return (
     <div className="fixed bottom-20 left-0 right-0 z-50 flex justify-center px-4 md:justify-end">

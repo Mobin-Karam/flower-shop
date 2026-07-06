@@ -1,224 +1,322 @@
 "use client";
 
-import { useMemo, useState, useTransition } from "react";
-import Skeleton from "react-loading-skeleton";
+import { useMemo, useState, useEffect, useCallback } from "react";
 
 import { products } from "@/lib/products";
-import ProductCard from "@/app/components/product-card";
-import MobileFilter from "@/app/components/mobile-filter";
+import { analytics } from "@/lib/analytics";
+import { useRecentlyViewed } from "@/lib/use-recently-viewed";
+import { ViewMode } from "../components/shop/SortBar";
 
-/* ---------------- SKELETON GRID ---------------- */
-function ProductGridSkeleton() {
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-      {Array.from({ length: 10 }).map((_, i) => (
-        <div
-          key={i}
-          className="border border-border rounded-xl p-3 space-y-3 bg-card"
-        >
-          <Skeleton height={140} borderRadius={12} />
-          <Skeleton height={14} width="80%" />
-          <Skeleton height={12} width="60%" />
-          <Skeleton height={20} width="40%" />
-        </div>
-      ))}
-    </div>
-  );
-}
+import SearchBar from "../components/shop/SearchBar";
+import CategoryBar from "../components/shop/CategoryBar";
+import CollectionTabs from "../components/shop/CollectionTabs";
+import FilterSidebar, {
+  FilterState,
+  defaultFilters,
+} from "../components/shop/FilterSidebar";
+import MobileFilterSheet from "../components/shop/MobileFilterSheet";
+import SortBar from "../components/shop/SortBar";
+import ProductGrid from "../components/shop/ProductGrid";
+import Pagination from "../components/shop/Pagination";
+import RecentlyViewed from "../components/shop/RecentlyViewed";
+import Recommended from "../components/shop/Recommended";
 
+/* ================= STORAGE KEYS ================= */
+const VIEW_MODE_KEY = "gulify-shop-view";
+const PER_PAGE_KEY = "gulify-shop-per-page";
+
+/* ================= MAIN ================= */
 export default function ShopPage() {
-  const [isPending, startTransition] = useTransition();
-
+  /* ---- State ---- */
   const [search, setSearch] = useState("");
-  const [activeTag, setActiveTag] = useState<string | null>(null);
-  const [sort, setSort] = useState<"default" | "cheap" | "expensive">(
-    "default",
-  );
+  const [collection, setCollection] = useState("all");
+  const [sort, setSort] = useState("default");
+  const [page, setPage] = useState(1);
 
-  const tags = ["آرامش", "خواب", "انرژی", "گل رز", "دمنوش گیاهی", "گیوه"];
+  /* ---- Local state ---- */
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [filters, setFilters] = useState<FilterState>(defaultFilters);
+  const [viewMode, setViewMode] = useState<ViewMode>("grid-4");
+  const [perPage, setPerPage] = useState(12);
 
+  /* ---- Load persisted preferences ---- */
+  useEffect(() => {
+    try {
+      const vm = localStorage.getItem(VIEW_MODE_KEY);
+      if (vm) setViewMode(vm as ViewMode);
+      const pp = localStorage.getItem(PER_PAGE_KEY);
+      if (pp) setPerPage(Number(pp));
+    } catch {}
+  }, []);
+
+  /* ---- Recently viewed ---- */
+  const { items: recentItems } = useRecentlyViewed();
+
+  /* ---- View mode change ---- */
+  const handleViewModeChange = useCallback((mode: ViewMode) => {
+    setViewMode(mode);
+    try {
+      localStorage.setItem(VIEW_MODE_KEY, mode);
+    } catch {}
+  }, []);
+
+  /* ---- Per page change ---- */
+  const handlePerPageChange = useCallback((n: number) => {
+    setPerPage(n);
+    setPage(1);
+    try {
+      localStorage.setItem(PER_PAGE_KEY, String(n));
+    } catch {}
+  }, []);
+
+  /* ---- Active filter count ---- */
+  const activeFilterCount = useMemo(() => {
+    let count = 0;
+    if (filters.brands.length > 0) count++;
+    if (filters.tags.length > 0) count++;
+    if (filters.rating > 0) count++;
+    if (filters.inStock) count++;
+    if (filters.discountOnly) count++;
+    if (filters.categories.length > 0) count++;
+    if (
+      filters.priceRange[0] > 0 ||
+      filters.priceRange[1] < Infinity
+    )
+      count++;
+    return count;
+  }, [filters]);
+
+  /* ---- FILTER + SORT + SEARCH ---- */
   const filtered = useMemo(() => {
+    let result = [...products];
+
+    // Search
     const q = search.trim().toLowerCase();
+    if (q) {
+      result = result.filter((p) => {
+        const fields = [
+          p.name,
+          p.description,
+          p.category,
+          p.subcategory,
+          p.brand,
+          p.sku,
+          p.barcode,
+          ...(p.tags || []),
+        ]
+          .join(" ")
+          .toLowerCase();
+        return fields.includes(q);
+      });
+    }
 
-    let result = products.filter((p) => {
-      const matchesSearch = !q || p.name.toLowerCase().includes(q);
+    // Category
+    if (activeCategory) {
+      result = result.filter((p) => p.category === activeCategory);
+    }
 
-      const matchesTag =
-        !activeTag || p.tags?.includes(activeTag) || p.name.includes(activeTag);
+    // Collection
+    switch (collection) {
+      case "new":
+        result = result.filter((p) => p.isNew);
+        break;
+      case "featured":
+        result = result.filter((p) => p.isFeatured);
+        break;
+      case "popular":
+        result = result.sort(
+          (a, b) => (b.viewCount ?? 0) - (a.viewCount ?? 0)
+        );
+        break;
+      case "bestseller":
+        result = result.filter((p) => p.isBestseller);
+        break;
+      case "sale":
+        result = result.filter(
+          (p) => (p.discountPercent ?? 0) > 0
+        );
+        break;
+      case "trending":
+        result = result.sort(
+          (a, b) => (b.purchaseCount ?? 0) - (a.purchaseCount ?? 0)
+        );
+        break;
+    }
 
-      return matchesSearch && matchesTag;
-    });
+    // Filters
+    if (filters.categories.length > 0) {
+      result = result.filter((p) =>
+        filters.categories.includes(p.category || "")
+      );
+    }
+    if (filters.brands.length > 0) {
+      result = result.filter((p) =>
+        filters.brands.includes(p.brand || "")
+      );
+    }
+    if (filters.tags.length > 0) {
+      result = result.filter((p) =>
+        filters.tags.some((t) => p.tags?.includes(t))
+      );
+    }
+    if (filters.rating > 0) {
+      result = result.filter((p) => (p.rating ?? 0) >= filters.rating);
+    }
+    if (filters.inStock) {
+      result = result.filter(
+        (p) => p.inStock === true && (p.stockQuantity ?? 0) > 0
+      );
+    }
+    if (filters.discountOnly) {
+      result = result.filter((p) => (p.discountPercent ?? 0) > 0);
+    }
+    if (filters.priceRange[0] > 0 || filters.priceRange[1] < Infinity) {
+      result = result.filter(
+        (p) =>
+          p.price >= filters.priceRange[0] &&
+          p.price <= filters.priceRange[1]
+      );
+    }
 
-    if (sort === "cheap")
-      result = [...result].sort((a, b) => a.price - b.price);
-
-    if (sort === "expensive")
-      result = [...result].sort((a, b) => b.price - a.price);
+    // Sort
+    switch (sort) {
+      case "newest":
+        result.sort(
+          (a, b) =>
+            (b.createdAt ?? "").localeCompare(a.createdAt ?? "")
+        );
+        break;
+      case "popular":
+        result.sort(
+          (a, b) => (b.viewCount ?? 0) - (a.viewCount ?? 0)
+        );
+        break;
+      case "rating":
+        result.sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
+        break;
+      case "price-low":
+        result.sort((a, b) => a.price - b.price);
+        break;
+      case "price-high":
+        result.sort((a, b) => b.price - a.price);
+        break;
+      case "discount":
+        result.sort(
+          (a, b) => (b.discountPercent ?? 0) - (a.discountPercent ?? 0)
+        );
+        break;
+    }
 
     return result;
-  }, [search, activeTag, sort]);
+  }, [search, activeCategory, collection, filters, sort]);
 
-  const clearFilters = () => {
-    startTransition(() => {
-      setSearch("");
-      setActiveTag(null);
-      setSort("default");
-    });
-  };
+  /* ---- Pagination ---- */
+  const totalPages = Math.ceil(filtered.length / perPage);
+  const paginated = useMemo(() => {
+    const start = (page - 1) * perPage;
+    return filtered.slice(start, start + perPage);
+  }, [filtered, page, perPage]);
+
+  /* ---- Reset page on filter change ---- */
+  useEffect(() => {
+    setPage(1);
+  }, [search, activeCategory, collection, filters, sort]);
+
+  /* ---- Track sort usage ---- */
+  useEffect(() => {
+    if (sort !== "default") analytics.sort(sort);
+  }, [sort]);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* HEADER */}
-      <header className="border-b border-border bg-card">
-        <div className="container-custom py-5 space-y-1">
-          <p className="text-[10px] tracking-[0.3em] text-primary uppercase">
-            فروشگاه گلیفای
-          </p>
-
-          <h1 className="text-base font-semibold text-foreground">
-            نتایج جستجو
-          </h1>
-
-          <p className="text-xs text-muted-foreground">
-            {filtered.length} محصول
-          </p>
+      {/* ===== SEARCH ===== */}
+      <div className="sticky top-16 z-40 bg-background/95 backdrop-blur-sm border-b border-border">
+        <div className="container-custom py-3">
+          <SearchBar
+            products={products}
+            value={search}
+            onChange={setSearch}
+          />
         </div>
-      </header>
-
-      {/* MOBILE FILTER */}
-      <div className="lg:hidden border-b border-border bg-card">
-        <MobileFilter
-          search={search}
-          setSearch={(val: string) =>
-            startTransition(() => {
-              setSearch(val);
-              setActiveTag(null);
-            })
-          }
-          tags={tags}
-          activeTag={activeTag}
-          setActiveTag={(tag: string | null) =>
-            startTransition(() => setActiveTag(tag))
-          }
-          clearFilters={clearFilters}
-        />
       </div>
 
-      {/* LAYOUT */}
-      <div className="container-custom py-5 grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-6">
-        {/* SIDEBAR */}
-        <aside className="hidden lg:block sticky top-24 h-fit space-y-5">
-          <div>
-            <p className="text-sm font-medium mb-3">فیلتر سریع</p>
+      <div className="container-custom py-4 space-y-4">
+        {/* ===== CATEGORIES ===== */}
+        <CategoryBar
+          products={products}
+          activeCategory={activeCategory}
+          onSelect={setActiveCategory}
+        />
 
-            <div className="flex flex-col gap-2">
-              {tags.map((tag) => {
-                const active = activeTag === tag;
+        {/* ===== COLLECTION TABS ===== */}
+        <CollectionTabs active={collection} onChange={setCollection} />
 
-                return (
-                  <button
-                    key={tag}
-                    onClick={() =>
-                      startTransition(() => setActiveTag(active ? null : tag))
-                    }
-                    className={`
-                      text-right text-sm px-3 py-2 rounded-lg border transition
-                      ${
-                        active
-                          ? "bg-primary text-primary-foreground border-primary"
-                          : "bg-card hover:border-primary/40 border-border"
-                      }
-                    `}
-                  >
-                    {tag}
-                  </button>
-                );
-              })}
-            </div>
+        {/* ===== MAIN LAYOUT ===== */}
+        <div className="grid grid-cols-1 lg:grid-cols-[240px_1fr] gap-6">
+          {/* SIDEBAR (desktop) */}
+          <div className="hidden lg:block sticky top-32 h-fit">
+            <FilterSidebar
+              products={products}
+              filters={filters}
+              onChange={setFilters}
+            />
           </div>
 
-          <button
-            onClick={clearFilters}
-            className="w-full text-sm text-destructive border border-destructive/20 rounded-lg py-2 hover:bg-destructive/10"
-          >
-            حذف فیلترها
-          </button>
-        </aside>
+          {/* MAIN CONTENT */}
+          <main className="space-y-4">
+            {/* SORT BAR + MOBILE FILTER */}
+            <div className="flex items-center justify-between gap-2">
+              <MobileFilterSheet
+                products={products}
+                filters={filters}
+                onChange={setFilters}
+                activeCount={activeFilterCount}
+              />
 
-        {/* MAIN */}
-        <main className="space-y-4">
-          {/* TOP BAR */}
-          <div className="hidden lg:flex items-center justify-between bg-card border border-border rounded-xl p-3 gap-3">
-            <input
-              value={search}
-              onChange={(e) =>
-                startTransition(() => {
-                  setSearch(e.target.value);
-                  setActiveTag(null);
-                })
-              }
-              placeholder="جستجو..."
-              className="input flex-1 bg-background text-foreground border-border"
+              <div className="flex-1">
+                <SortBar
+                  sort={sort}
+                  onSortChange={setSort}
+                  viewMode={viewMode}
+                  onViewModeChange={handleViewModeChange}
+                  productCount={filtered.length}
+                />
+              </div>
+            </div>
+
+            {/* PRODUCT GRID */}
+            <ProductGrid
+              products={paginated}
+              viewMode={viewMode}
+              source="shop"
             />
 
-            <select
-              value={sort}
-              onChange={(e) =>
-                startTransition(() => setSort(e.target.value as any))
-              }
-              className="border border-border bg-background rounded-lg px-3 py-2 text-sm"
-            >
-              <option value="default">مرتب‌سازی</option>
-              <option value="cheap">ارزان‌ترین</option>
-              <option value="expensive">گران‌ترین</option>
-            </select>
+            {/* PAGINATION */}
+            <Pagination
+              currentPage={page}
+              totalPages={totalPages}
+              onPageChange={(p) => {
+                setPage(p);
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+              perPage={perPage}
+              onPerPageChange={handlePerPageChange}
+            />
 
-            {(search || activeTag) && (
-              <button
-                onClick={clearFilters}
-                className="text-sm text-destructive"
-              >
-                پاک‌سازی
-              </button>
-            )}
-          </div>
-
-          {/* ACTIVE FILTERS */}
-          {(activeTag || search) && (
-            <div className="hidden lg:flex flex-wrap gap-2">
-              {activeTag && (
-                <span className="text-xs px-3 py-1 rounded-full bg-primary text-primary-foreground">
-                  {activeTag}
-                </span>
-              )}
-
-              {search && (
-                <span className="text-xs px-3 py-1 rounded-full bg-muted text-muted-foreground">
-                  {search}
-                </span>
-              )}
+            {/* RECENTLY VIEWED */}
+            <div className="border-t border-border pt-6">
+              <RecentlyViewed products={recentItems} />
             </div>
-          )}
 
-          {/* GRID */}
-          {isPending ? (
-            <ProductGridSkeleton />
-          ) : filtered.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-              {filtered.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
+            {/* RECOMMENDED */}
+            <div className="border-t border-border pt-6">
+              <Recommended
+                allProducts={products}
+                currentProducts={paginated}
+              />
             </div>
-          ) : (
-            <div className="py-20 text-center space-y-3">
-              <p className="text-sm text-muted-foreground">محصولی یافت نشد</p>
-
-              <button onClick={clearFilters} className="btn-primary">
-                مشاهده همه محصولات
-              </button>
-            </div>
-          )}
-        </main>
+          </main>
+        </div>
       </div>
     </div>
   );

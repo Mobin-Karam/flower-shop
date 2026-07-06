@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Shop Flowers - Gol Mohammadi",
+  title: "فروشگاه | Gulify",
   description:
-    "Browse fresh roses, bouquets, and floral arrangements at Gol Mohammadi.",
+    "مشاهده و خرید محصولات Gulify شامل دمنوش‌های گیاهی، گل محمدی، کفش سنتی و صنایع دستی کردستان.",
 };
 
 export default function ShopLayout({
@@ -12,10 +11,5 @@ export default function ShopLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <div>
-      {/* Page content */}
-      <main className="container-custom py-8">{children}</main>
-    </div>
-  );
+  return <>{children}</>;
 }

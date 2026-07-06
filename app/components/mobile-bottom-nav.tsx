@@ -15,7 +15,7 @@ export default function MobileBottomNav() {
   const count = useCartStore((s) => s.getTotalItems());
 
   const activeLayer = useUIStore((s) => s.activeLayer);
-  const hidden = activeLayer === "cart-cta";
+  const hidden = activeLayer === "cart-cta" || activeLayer === "product-cta";
 
   const [mounted, setMounted] = useState(false);
   const [style, setStyle] = useState({ left: 0, width: 0 });

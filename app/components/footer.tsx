@@ -183,6 +183,24 @@ export default function Footer() {
 
         <div className="border-t border-border" />
 
+        {/* ================= SUPPORT ================= */}
+        <div className="flex justify-center">
+          <a
+            href="https://coffeebede.com/mobinkaram"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block w-full max-w-[468px]"
+          >
+            <img
+              src="https://coffeebede.com/banner.svg?u=mobinkaram&bg=1a120b&fg=f5ebdd&sub=c8b49a&mbg=c8763e&mfg=1a120b&cbg=f5ebdd&bd=f5ebdd"
+              width={468}
+              height={100}
+              alt="برام یه قهوه بخر"
+              className="h-auto w-full"
+            />
+          </a>
+        </div>
+
         {/* ================= BOTTOM BAR ================= */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-muted-foreground">
           <p>© {new Date().getFullYear()} گلیفای — All rights reserved</p>
